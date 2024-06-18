@@ -1,11 +1,17 @@
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <queue>
 
-template <typename T>
+
+using namespace std;
+template <typename T,int N>
 class PreOrderIterator {
     public:
-        explicit PreOrderIterator(TreeNode<T>* root) {
-            if (root) stack.push(root);
+        PreOrderIterator(Tree<T>* root) {
+            if(root){ 
+                stack.push(root);
+            }
         }
 
         bool operator!=(const PreOrderIterator& other) const {
@@ -17,22 +23,22 @@ class PreOrderIterator {
         }
 
         PreOrderIterator& operator++() {
-            TreeNode<T>* node = stack.top();
+            Tree<T>* node = stack.top();
             stack.pop();
             for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
                 if (*it) stack.push(it->get());
             }
             return *this;
-        }
+        }s
 
     private:
-        std::stack<TreeNode<T>*> stack;
+        stack<Tree<T>*> stack;
 };
 
 template <typename T>
 class InOrderIterator {
 public:
-    InOrderIterator(TreeNode<T>* root) {
+    InOrderIterator(Tree<T>* root) {
         pushLeft(root);
     }
 
@@ -74,61 +80,61 @@ private:
     }
 };
 
-template <typename T>
+template <typename T,int N>
 class PostOrderIterator {
-public:
-    PostOrderIterator(TreeNode<T>* root) {
-        findNextLeaf(root);
-    }
-
-    bool operator!=(const PostOrderIterator& other) const {
-        return !(*this == other);
-    }
-
-    bool operator==(const PostOrderIterator& other) const {
-        return nodes == other.nodes;
-    }
-
-    Node<T>& operator*() const {
-        return *nodes.top();
-    }
-
-    PostOrderIterator& operator++() {
-        if (!nodes.empty()) {
-            Node<T>* current = nodes.top();
-            nodes.pop();
-            if (!nodes.empty()) {
-                Node<T>* top = nodes.top();
-                if (!top->children.empty() && top->children.back().get() == current) {
-                    nodes.pop();
-                    findNextLeaf(top);
-                }
-            }
+    public:
+        PostOrderIterator(Tree<T>* root) {
+            findNextLeaf(root);
         }
-        return *this;
-    }
 
-private:
-    std::stack<Node<T>*> nodes;
+        bool operator!=(const PostOrderIterator& other) const {
+            return !(*this == other);
+        }
 
-    void findNextLeaf(Node<T>* node) {
-        while (node) {
-            nodes.push(node);
-            if (!node->children.empty()) {
-                for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
-                    if (*it) {
-                        node = it->get();
-                        break;
+        bool operator==(const PostOrderIterator& other) const {
+            return nodes == other.nodes;
+        }
+
+        Node<T>& operator*() const {
+            return *nodes.top();
+        }
+
+        PostOrderIterator& operator++() {
+            if (!nodes.empty()) {
+                Node<T>* current = nodes.top();
+                nodes.pop();
+                if (!nodes.empty()) {
+                    Node<T>* top = nodes.top();
+                    if (!top->children.empty() && top->children.back().get() == current) {
+                        nodes.pop();
+                        findNextLeaf(top);
                     }
                 }
-            } else {
-                break;
+            }
+            return *this;
+        }
+
+    private:
+        std::stack<Node<T>*> nodes;
+
+        void findNextLeaf(Node<T>* node) {
+            while (node) {
+                nodes.push(node);
+                if (!node->children.empty()) {
+                    for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
+                        if (*it) {
+                            node = it->get();
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
             }
         }
-    }
 };
 
-template <typename T>
+template <typename T,int N>
 class BFSIterator {
     public:
         BFSIterator(Node<T>* root) {
@@ -163,6 +169,6 @@ class BFSIterator {
         }
 
     private:
-        std::queue<Node<T>*> nodes;
+        queue<Node<T>*> nodes;
 };
 

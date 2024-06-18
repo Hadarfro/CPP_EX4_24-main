@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
+#ifndef NODE_HPP
+#define NODE_HPP
 
 using namespace std;
 
 template<typename T,int N = 2>
-struct Node {
+class Node {
     T value;
     vector<T> children;
 
@@ -22,3 +24,5 @@ struct Node {
         }
     }
 };
+
+#endif // NODE_HPP
