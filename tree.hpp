@@ -1,41 +1,51 @@
 #include <iostream>
 #include <vector>
+#include "node.hpp"
+#include "iterators.hpp"
 
-
-template <typename T>
+template <typename T,int N = 2>
 class Tree {
-public:
-    explicit Tree(int k = 2) : maxChildren(k), root(nullptr) {}
+    public:
+        Tree(int k = 2) : maxChildren(k), root(nullptr) {}
 
-    void add_root(const T& value) {
-        root = Node<T>*(value, maxChildren);
-    }
-
-    void add_sub_node(const T& parent_value, const T& child_value) {
-        Node<T>* parent = find_node(root.get(), parent_value);
-        if (!parent) throw std::runtime_error("Parent node not found");
-        for (auto& child : parent->children) {
-            if (!child) {
-                child = Node<T>*(child_value, maxChildren);
-                return;
-            }
+        void add_root(Node node) {
+            root = Node<T,N>*(node, maxChildren);
         }
-        throw std::runtime_error("Parent has the maximum number of children");
-    }
-
-    // Define iterators and traversal methods here...
-
-private:
-    int maxChildren;
-    Node<T>* root;
-
-    Node<T>* find_node(Node<T>* node, const T& value) {
-        if (!node) return nullptr;
-        if (node->value == value) return node;
-        for (auto& child : node->children) {
-            Node<T>* found = find_node(child.get(), value);
-            if (found) return found;
+        Node<T,N> getRoot(){
+            return root[0];
+        } 
+        class BFSIterator;
+        BFSIterator begin() { return BFSIterator(root.get()); }
+        BFSIterator end() { return BFSIterator(nullptr); }
+        void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node));
+        Node<T,N>* find_node(Node<T,N>* node, const T& value);
+        PreOrderIterator begin_pre_order() {
+            return PreOrderIterator(root.get());
         }
-        return nullptr;
-    }
+        PreOrderIterator end_pre_order() {
+            return PreOrderIterator(nullptr);
+        }
+        PostOrderIterator begin_post_order() {
+            return PostOrderIterator(root.get());
+        }
+        PostOrderIterator end_post_order() {
+            return PostOrderIterator(nullptr);
+        }
+        InOrderIterator begin_in_order() {
+            return InOrderIterator(root.get());
+        }
+        InOrderIterator end_in_order() {
+            return InOrderIterator(nullptr);
+        }
+        BFSIterator begin_bfs_scan() {
+            return BFSIterator(root.get());
+        }
+        BFSIterator end_bfs_scan() {
+            return BFSIterator(nullptr);
+        }
+        // Define iterators and traversal methods here...
+
+    private:
+        int maxChildren;
+        Node<T>* root;
 };

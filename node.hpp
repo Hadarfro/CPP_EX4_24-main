@@ -3,18 +3,22 @@
 
 using namespace std;
 
-template<typename T>
+template<typename T,int N = 2>
 struct Node {
     T value;
     vector<T> children;
 
     // Constructor to initialize the node with a value
-    explicit TreeNode(const T& val, int k) : value(val), children(k) {}
+    Node(const T& val, vector<T> k = {}) : value(val), children(k) {
+        children.resize(N);
+    }
 
     // Destructor to clean up the memory allocated for children
     ~Node() {
-        for (auto child : children) {
-            delete child;
+        if (children.size > 0){
+            for (auto child : children) {
+                delete child;
+            }
         }
     }
 };
