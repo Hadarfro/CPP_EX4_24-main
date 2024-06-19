@@ -8,10 +8,10 @@ using namespace std;
 template<typename T,int N = 2>
 class Node {
     T value;
-    vector<T> children;
+    vector<Node> children;
 
     // Constructor to initialize the node with a value
-    Node(const T& val, vector<T> k = {}) : value(val), children(k) {
+    Node(const T& val, vector<Node> k = {}) : value(val), children(k) {
         children.resize(N);
     }
 

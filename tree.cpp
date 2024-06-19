@@ -9,12 +9,12 @@ template <typename T, int N >
 void Tree<T,N>::add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
     // Check if child node has the same arity as parent
     if (parent->children.size() > maxChildren) {
-        throw std::runtime_error("Parent node arity mismatch");
+        throw runtime_error("Parent node arity mismatch");
         return;
     }
     Node <T,N>* parent = find_node(root.get(), parent_value);
     if (!parent){ 
-        throw std::runtime_error("Parent node not found");
+        throw runtime_error("Parent node not found");
         return;
     }
     for (auto& child : parent->children) {
@@ -23,7 +23,7 @@ void Tree<T,N>::add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
             return;
         }
     }
-    throw std::runtime_error("Parent has the maximum number of children");
+    throw runtime_error("Parent has the maximum number of children");
 }
 
 template <typename T,int N >

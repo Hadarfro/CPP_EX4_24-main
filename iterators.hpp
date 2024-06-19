@@ -191,7 +191,7 @@ class HeapIterator {
         }
 
     private:
-        typename std::vector<T>::HeapIterator current;
+        vector<T>::HeapIterator current;
     };
 
     // HeapIterator begin() {
