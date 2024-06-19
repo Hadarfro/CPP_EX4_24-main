@@ -3,8 +3,8 @@
 #include "node.hpp"
 #include "iterators.hpp"
 
-template <typename T,int N = 2>
-class Tree {
+
+template <typename T,int N = 2> class Tree {
     public:
         Tree(int k = 2) : maxChildren(k), root(nullptr) {}
 
@@ -12,7 +12,7 @@ class Tree {
             root = Node<T,N>*(node, maxChildren);
         }
         Node<T,N> getRoot(){
-            return root[0];
+            return root;
         } 
         class BFSIterator;
         BFSIterator begin() { return BFSIterator(root.get()); }

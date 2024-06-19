@@ -172,3 +172,35 @@ class BFSIterator {
         queue<Node<T>*> nodes;
 };
 
+template <typename T,int N>
+class HeapIterator {
+    public:
+        HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
+
+        T& operator*() {
+            return *current;
+        }
+
+        HeapIterator& operator++() {
+            ++current;
+            return *this;
+        }
+
+        bool operator!=(const HeapIterator& other) const {
+            return current != other.current;
+        }
+
+    private:
+        typename std::vector<T>::HeapIterator current;
+    };
+
+    // HeapIterator begin() {
+    //     return HeapIterator(heap.begin());
+    // }
+
+    // HeapIterator end() {
+    //     return HeapIterator(heap.end());
+    // }
+
+
+
