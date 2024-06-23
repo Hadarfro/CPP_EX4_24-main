@@ -1,16 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include "tree.hpp"
-#include "node.hpp"
-
-
+#include <queue>
+#include <algorithm>
+// #include "tree.hpp"
+// #include "node.hpp"
+template <typename T,int N> class Tree;
 
 using namespace std;
 
-template <typename T> class PreOrderIterator {
+template <typename T,int N> class PreOrderIterator {
     public:
-        PreOrderIterator(Tree<T>* root) {
+        PreOrderIterator(Tree<T,N>* root) {
             if(root){ 
                 stack.push(root);
             }
@@ -25,22 +26,22 @@ template <typename T> class PreOrderIterator {
         }
 
         PreOrderIterator& operator++() {
-            Tree<T>* node = stack.top();
+            Tree<T,N>* node = stack.top();
             stack.pop();
             for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
                 if (*it) stack.push(it->get());
             }
             return *this;
-        }s
+        }
 
     private:
-        stack<Tree<T>*> stack;
+        stack<Tree<T,N>*> stack;
 };
 
 
-template <typename T> class InOrderIterator {
+template <typename T,int N> class InOrderIterator {
     public:
-        InOrderIterator(Tree<T>* root) {
+        InOrderIterator(Tree<T,N>* root) {
             pushLeft(root);
         }
 
@@ -52,7 +53,7 @@ template <typename T> class InOrderIterator {
             return nodes == other.nodes;
         }
 
-        Node<T>& operator*() const {
+        Node<T,N>& operator*() const {
             return *nodes.top();
         }
 
@@ -68,9 +69,9 @@ template <typename T> class InOrderIterator {
         }
 
     private:
-        stack<Node<T>*> nodes;
+        stack<Node<T,N>*> nodes;
 
-        void pushLeft(Node<T>* node) {
+        void pushLeft(Node<T,N>* node) {
             while (node) {
                 nodes.push(node);
                 if (!node->children.empty()) {
@@ -84,9 +85,9 @@ template <typename T> class InOrderIterator {
 };
 
 
-template <typename T> class PostOrderIterator {
+template <typename T,int N> class PostOrderIterator {
     public:
-        PostOrderIterator(Tree<T>* root) {
+        PostOrderIterator(Tree<T,N>* root) {
             findNextLeaf(root);
         }
 
@@ -98,16 +99,16 @@ template <typename T> class PostOrderIterator {
             return nodes == other.nodes;
         }
 
-        Node<T>& operator*() const {
+        Node<T,N>& operator*() const {
             return *nodes.top();
         }
 
         PostOrderIterator& operator++() {
             if (!nodes.empty()) {
-                Node<T>* current = nodes.top();
+                Node<T,N>* current = nodes.top();
                 nodes.pop();
                 if (!nodes.empty()) {
-                    Node<T>* top = nodes.top();
+                    Node<T,N>* top = nodes.top();
                     if (!top->children.empty() && top->children.back().get() == current) {
                         nodes.pop();
                         findNextLeaf(top);
@@ -118,9 +119,9 @@ template <typename T> class PostOrderIterator {
         }
 
     private:
-        stack<Node<T>*> nodes;
+        stack<Node<T,N>*> nodes;
 
-        void findNextLeaf(Node<T>* node) {
+        void findNextLeaf(Node<T,N>* node) {
             while (node) {
                 nodes.push(node);
                 if (!node->children.empty()) {
@@ -140,7 +141,7 @@ template <typename T> class PostOrderIterator {
 
 template <typename T,int N> class BFSIterator {
     public:
-        BFSIterator(Node<T>* root) {
+        BFSIterator(Node<T,N>* root) {
             if (root) {
                 nodes.push(root);
             }
@@ -160,7 +161,7 @@ template <typename T,int N> class BFSIterator {
 
         BFSIterator& operator++() {
             if (!nodes.empty()) {
-                Node<T>* current = nodes.front();
+                Node<T,N>* current = nodes.front();
                 nodes.pop();
                 for (auto& child : current->children) {
                     if (child) {
@@ -172,7 +173,7 @@ template <typename T,int N> class BFSIterator {
         }
 
     private:
-        queue<Node<T>*> nodes;
+        queue<Node<T,N>*> nodes;
 };
 
 
@@ -194,7 +195,7 @@ template <typename T,int N> class HeapIterator {
         }
 
     private:
-        vector<T>::HeapIterator current;
+        std::vector<T>::iterator current;
 };
 
     // HeapIterator begin() {

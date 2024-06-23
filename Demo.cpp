@@ -10,14 +10,14 @@ using namespace std;
 
 int main()
 {
-    Node<double,2> root_node = Node(1.1);
+    Node<double,2> root_node(1.1);
     Tree<double,2> tree; // Binary tree that contains doubles.
     tree.add_root(root_node);
-    Node<double,2> n1 = Node(1.2);
-    Node<double,2> n2 = Node(1.3);
-    Node<double,2> n3 = Node(1.4);
-    Node<double,2> n4 = Node(1.5);
-    Node<double,2> n5 = Node(1.6);
+    Node<double,2> n1(1.2);
+    Node<double,2> n2(1.3);
+    Node<double,2> n3(1.4);
+    Node<double,2> n4(1.5);
+    Node<double,2> n5(1.6);
 
     tree.add_sub_node(root_node, n1);
     tree.add_sub_node(root_node, n2);

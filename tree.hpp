@@ -1,44 +1,44 @@
 #include <iostream>
 #include <vector>
 #include "node.hpp"
-// #include "iterators.hpp"
+#include "iterators.hpp"
 
 
 template <typename T,int N = 2> class Tree {
     public:
-        Tree(int N = 2) : maxChildren(N), root(nullptr) {}
+        Tree() : maxChildren(N), root(nullptr) {}
 
-        void add_root(Node node) {
-            root = Node<T,N>*(node, maxChildren);
+        void add_root(Node<T,N> node) {
+            root = &Node<T,N>(node, maxChildren);
         }
         Node<T,N> getRoot(){
             return root;
         } 
         class BFSIterator;
-        BFSIterator begin() { return BFSIterator(root.get()); }
+        BFSIterator begin() { return BFSIterator(&root); }
         BFSIterator end() { return BFSIterator(nullptr); }
-        void add_sub_node(Node<T>& parent_node, Node<T>& child_node));
+        void add_sub_node(Node<T>& parent_node, Node<T>& child_node);
         Node<T,N>* find_node(Node<T,N>* node, const T& value);
         PreOrderIterator begin_pre_order() {
-            return PreOrderIterator(root.get());
+            return PreOrderIterator(&root);
         }
         PreOrderIterator end_pre_order() {
             return PreOrderIterator(nullptr);
         }
         PostOrderIterator begin_post_order() {
-            return PostOrderIterator(root.get());
+            return PostOrderIterator(&root);
         }
         PostOrderIterator end_post_order() {
             return PostOrderIterator(nullptr);
         }
         InOrderIterator begin_in_order() {
-            return InOrderIterator(root.get());
+            return InOrderIterator(&root);
         }
         InOrderIterator end_in_order() {
             return InOrderIterator(nullptr);
         }
         BFSIterator begin_bfs_scan() {
-            return BFSIterator(root.get());
+            return BFSIterator(&root);
         }
         BFSIterator end_bfs_scan() {
             return BFSIterator(nullptr);
