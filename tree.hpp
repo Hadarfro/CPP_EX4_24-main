@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 #include "node.hpp"
-#include "iterators.hpp"
+// #include "iterators.hpp"
 
 
 template <typename T,int N = 2> class Tree {
     public:
-        Tree(int k = 2) : maxChildren(k), root(nullptr) {}
+        Tree(int N = 2) : maxChildren(N), root(nullptr) {}
 
         void add_root(Node node) {
             root = Node<T,N>*(node, maxChildren);
@@ -17,7 +17,7 @@ template <typename T,int N = 2> class Tree {
         class BFSIterator;
         BFSIterator begin() { return BFSIterator(root.get()); }
         BFSIterator end() { return BFSIterator(nullptr); }
-        void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node));
+        void add_sub_node(Node<T>& parent_node, Node<T>& child_node));
         Node<T,N>* find_node(Node<T,N>* node, const T& value);
         PreOrderIterator begin_pre_order() {
             return PreOrderIterator(root.get());

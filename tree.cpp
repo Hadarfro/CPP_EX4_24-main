@@ -6,7 +6,7 @@
 using namespace std;
 
 template <typename T, int N >
-void Tree<T,N>::add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
+void Tree<T,N>::add_sub_node(Node<T>& parent_node, Node<T>& child_node) {
     // Check if child node has the same arity as parent
     if (parent->children.size() > maxChildren) {
         throw runtime_error("Parent node arity mismatch");
@@ -26,7 +26,7 @@ void Tree<T,N>::add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
     throw runtime_error("Parent has the maximum number of children");
 }
 
-template <typename T,int N >
+template <typename T,int N>
 Node<T,N>* Tree<T,N>::find_node(Node<T,N>* node, const T& value) {
     if (!node) return nullptr;
     if (node->value == value) return node;

@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include <queue>
+#include "tree.hpp"
+#include "node.hpp"
+
 
 
 using namespace std;
-template <typename T,int N>
-class PreOrderIterator {
+
+template <typename T> class PreOrderIterator {
     public:
         PreOrderIterator(Tree<T>* root) {
             if(root){ 
@@ -35,53 +37,54 @@ class PreOrderIterator {
         stack<Tree<T>*> stack;
 };
 
-template <typename T>
-class InOrderIterator {
-public:
-    InOrderIterator(Tree<T>* root) {
-        pushLeft(root);
-    }
 
-    bool operator!=(const InOrderIterator& other) const {
-        return !(*this == other);
-    }
+template <typename T> class InOrderIterator {
+    public:
+        InOrderIterator(Tree<T>* root) {
+            pushLeft(root);
+        }
 
-    bool operator==(const InOrderIterator& other) const {
-        return nodes == other.nodes;
-    }
+        bool operator!=(const InOrderIterator& other) const {
+            return !(*this == other);
+        }
 
-    Node<T>& operator*() const {
-        return *nodes.top();
-    }
+        bool operator==(const InOrderIterator& other) const {
+            return nodes == other.nodes;
+        }
 
-    InOrderIterator& operator++() {
-        if (!nodes.empty()) {
-            Node<T>* current = nodes.top();
-            nodes.pop();
-            if (!current->children.empty()) {
-                pushLeft(current->children[1].get());
+        Node<T>& operator*() const {
+            return *nodes.top();
+        }
+
+        InOrderIterator& operator++() {
+            if (!nodes.empty()) {
+                Node<T>* current = nodes.top();
+                nodes.pop();
+                if (!current->children.empty()) {
+                    pushLeft(current->children[1].get());
+                }
+            }
+            return *this;
+        }
+
+    private:
+        stack<Node<T>*> nodes;
+
+        void pushLeft(Node<T>* node) {
+            while (node) {
+                nodes.push(node);
+                if (!node->children.empty()) {
+                    node = node->children[0].get();
+                } 
+                else {
+                    break;
+                }
             }
         }
-        return *this;
-    }
-
-private:
-    std::stack<Node<T>*> nodes;
-
-    void pushLeft(Node<T>* node) {
-        while (node) {
-            nodes.push(node);
-            if (!node->children.empty()) {
-                node = node->children[0].get();
-            } else {
-                break;
-            }
-        }
-    }
 };
 
-template <typename T,int N>
-class PostOrderIterator {
+
+template <typename T> class PostOrderIterator {
     public:
         PostOrderIterator(Tree<T>* root) {
             findNextLeaf(root);
@@ -115,7 +118,7 @@ class PostOrderIterator {
         }
 
     private:
-        std::stack<Node<T>*> nodes;
+        stack<Node<T>*> nodes;
 
         void findNextLeaf(Node<T>* node) {
             while (node) {
@@ -134,8 +137,8 @@ class PostOrderIterator {
         }
 };
 
-template <typename T,int N>
-class BFSIterator {
+
+template <typename T,int N> class BFSIterator {
     public:
         BFSIterator(Node<T>* root) {
             if (root) {
@@ -172,8 +175,8 @@ class BFSIterator {
         queue<Node<T>*> nodes;
 };
 
-template <typename T,int N>
-class HeapIterator {
+
+template <typename T,int N> class HeapIterator {
     public:
         HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
 
@@ -192,7 +195,7 @@ class HeapIterator {
 
     private:
         vector<T>::HeapIterator current;
-    };
+};
 
     // HeapIterator begin() {
     //     return HeapIterator(heap.begin());
