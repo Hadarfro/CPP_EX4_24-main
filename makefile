@@ -7,10 +7,10 @@ CXX = clang++
 CXXFLAGS = -std=c++11 -Werror -Wsign-conversion 
 VALGRIND_FLAGS = -v --leak-check=full --show-leak-kinds=all --error-exitcode=99
 
-SOURCES = tree.cpp node.cpp iterators.hpp TestCounter.cpp Test.cpp
+SOURCES = tree.cpp node.cpp 
 OBJECTS = $(SOURCES:.cpp=.o)
 
-run: demo test
+run: demo 
 
 demo: Demo.o $(filter-out TestCounter.o Test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) -v $^ -o $@

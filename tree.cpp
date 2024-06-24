@@ -6,20 +6,20 @@
 using namespace std;
 
 template <typename T, int N >
-void Tree<T,N>::add_sub_node(Node<T>& parent_node, Node<T>& child_node) {
+void Tree<T,N>::add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
     // Check if child node has the same arity as parent
+    Node<T,N>* parent = find_node(&root, parent_node.get_value());
     if (parent->children.size() > maxChildren) {
         throw runtime_error("Parent node arity mismatch");
         return;
     }
-    Node <T,N>* parent = find_node(root.get(), parent_value);
     if (!parent){ 
         throw runtime_error("Parent node not found");
         return;
     }
     for (auto& child : parent->children) {
         if (!child) {
-            child = Node<T,N>*(child_value, maxChildren);
+            child = Node<T,N>(child_node.get_value(), maxChildren);
             return;
         }
     }

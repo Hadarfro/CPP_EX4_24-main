@@ -13,8 +13,12 @@ template<typename T,int N = 2> class Node {
         vector<Node> children;
     public:
         // Constructor to initialize the node with a value
-        Node(T val, vector<Node> k = {}) : value(val), children(k), maxChild(N) {
+        explicit Node(T val, vector<Node> k = {}) : value(val), children(k), maxChild(N) {
             // children.resize(2);
+        }
+
+        T get_value(){
+            return value;
         }
 
         // Destructor to clean up the memory allocated for children

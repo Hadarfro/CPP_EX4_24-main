@@ -1,7 +1,10 @@
+#ifndef TREE_HPP
+#define TREE_HPP
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "node.hpp"
-#include "iterators.hpp"
+//#include "iterators.hpp"
 
 
 template <typename T,int N = 2> class Tree {
@@ -9,43 +12,45 @@ template <typename T,int N = 2> class Tree {
         Tree() : maxChildren(N), root(nullptr) {}
 
         void add_root(Node<T,N> node) {
-            root = &Node<T,N>(node, maxChildren);
+            root = &node;
         }
         Node<T,N> getRoot(){
             return root;
         } 
-        class BFSIterator;
-        BFSIterator begin() { return BFSIterator(&root); }
-        BFSIterator end() { return BFSIterator(nullptr); }
-        void add_sub_node(Node<T>& parent_node, Node<T>& child_node);
+        // class BFSIterator;
+        // BFSIterator begin() { return BFSIterator(&root); }
+        // BFSIterator end() { return BFSIterator(nullptr); }
+        void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node);
         Node<T,N>* find_node(Node<T,N>* node, const T& value);
-        PreOrderIterator begin_pre_order() {
-            return PreOrderIterator(&root);
-        }
-        PreOrderIterator end_pre_order() {
-            return PreOrderIterator(nullptr);
-        }
-        PostOrderIterator begin_post_order() {
-            return PostOrderIterator(&root);
-        }
-        PostOrderIterator end_post_order() {
-            return PostOrderIterator(nullptr);
-        }
-        InOrderIterator begin_in_order() {
-            return InOrderIterator(&root);
-        }
-        InOrderIterator end_in_order() {
-            return InOrderIterator(nullptr);
-        }
-        BFSIterator begin_bfs_scan() {
-            return BFSIterator(&root);
-        }
-        BFSIterator end_bfs_scan() {
-            return BFSIterator(nullptr);
-        }
-        // Define iterators and traversal methods here...
+        // PreOrderIterator<T, N> begin_pre_order() {
+        //     return PreOrderIterator<T, N>(&root);
+        // }
+        // PreOrderIterator<T, N> end_pre_order() {
+        //     return PreOrderIterator<T, N>(nullptr);
+        // }
+        // PostOrderIterator<T, N> begin_post_order() {
+        //     return PostOrderIterator<T, N>(&root);
+        // }
+        // PostOrderIterator<T, N> end_post_order() {
+        //     return PostOrderIterator<T, N>(nullptr);
+        // }
+        // InOrderIterator<T, N> begin_in_order() {
+        //     return InOrderIterator<T, N>(&root);
+        // }
+        // InOrderIterator<T, N> end_in_order() {
+        //     return InOrderIterator<T, N>(nullptr);
+        // }
+        // BFSIterator begin_bfs_scan() {
+        //     return BFSIterator(&root);
+        // }
+        // BFSIterator end_bfs_scan() {
+        //     return BFSIterator(nullptr);
+        // }
 
     private:
         int maxChildren;
-        Node<T>* root;
+        //Node<T,N>* root;
+        Node<T, N>* root;
 };
+
+#endif // TREE_HPP

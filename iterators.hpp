@@ -1,17 +1,19 @@
+#ifndef ITERATORS_HPP
+#define ITERATORS_HPP
 #include <iostream>
 #include <vector>
 #include <stack>
 #include <queue>
 #include <algorithm>
-// #include "tree.hpp"
-// #include "node.hpp"
-template <typename T,int N> class Tree;
+
+template <typename T, int N>
+class Tree;
 
 using namespace std;
 
 template <typename T,int N> class PreOrderIterator {
     public:
-        PreOrderIterator(Tree<T,N>* root) {
+        explicit PreOrderIterator(Tree<T,N>* root) {
             if(root){ 
                 stack.push(root);
             }
@@ -34,14 +36,18 @@ template <typename T,int N> class PreOrderIterator {
             return *this;
         }
 
+        Node<T, N>* operator->() const {
+            return stack.top();
+        }
+
     private:
-        stack<Tree<T,N>*> stack;
+        stack<Node<T,N>*> stack;
 };
 
 
 template <typename T,int N> class InOrderIterator {
     public:
-        InOrderIterator(Tree<T,N>* root) {
+        explicit InOrderIterator(Tree<T,N>* root) {
             pushLeft(root);
         }
 
@@ -68,6 +74,10 @@ template <typename T,int N> class InOrderIterator {
             return *this;
         }
 
+        Node<T, N>* operator->() const {
+            return stack.top();
+        }
+
     private:
         stack<Node<T,N>*> nodes;
 
@@ -87,7 +97,7 @@ template <typename T,int N> class InOrderIterator {
 
 template <typename T,int N> class PostOrderIterator {
     public:
-        PostOrderIterator(Tree<T,N>* root) {
+        explicit PostOrderIterator(Tree<T,N>* root) {
             findNextLeaf(root);
         }
 
@@ -141,22 +151,10 @@ template <typename T,int N> class PostOrderIterator {
 
 template <typename T,int N> class BFSIterator {
     public:
-        BFSIterator(Node<T,N>* root) {
+        explicit BFSIterator(Node<T,N>* root) {
             if (root) {
                 nodes.push(root);
             }
-        }
-
-        bool operator!=(const BFSIterator& other) const {
-            return !(*this == other);
-        }
-
-        bool operator==(const BFSIterator& other) const {
-            return nodes == other.nodes;
-        }
-
-        Node<T>& operator*() const {
-            return *nodes.front();
         }
 
         BFSIterator& operator++() {
@@ -179,7 +177,7 @@ template <typename T,int N> class BFSIterator {
 
 template <typename T,int N> class HeapIterator {
     public:
-        HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
+        explicit HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
 
         T& operator*() {
             return *current;
@@ -195,7 +193,7 @@ template <typename T,int N> class HeapIterator {
         }
 
     private:
-        std::vector<T>::iterator current;
+        vector<T>::iterator current;
 };
 
     // HeapIterator begin() {
@@ -207,4 +205,4 @@ template <typename T,int N> class HeapIterator {
     // }
 
 
-
+#endif // ITERATORS_HPP
