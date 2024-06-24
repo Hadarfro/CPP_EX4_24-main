@@ -20,7 +20,7 @@ int main()
     Node<double,2> n5(1.6);
     cout << "test" << endl;
 
-    // tree.add_sub_node(root_node, n1);
+    tree.add_sub_node(&root_node, &n1);
     // tree.add_sub_node(root_node, n2);
     // tree.add_sub_node(n1, n3);
     // tree.add_sub_node(n1, n4);

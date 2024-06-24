@@ -20,8 +20,26 @@ template <typename T,int N = 2> class Tree {
         // class BFSIterator;
         // BFSIterator begin() { return BFSIterator(&root); }
         // BFSIterator end() { return BFSIterator(nullptr); }
-        void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node);
-        Node<T,N>* find_node(Node<T,N>* node, const T& value);
+        void add_sub_node(Node<T,N>* parent_node, Node<T,N>* child_node) {
+            // Check if child node has the same arity as parent
+            Node<T,N>* parent = find_node(root, parent_node->get_value());
+            if (parent->getChildren().size() > N) {
+                throw runtime_error("Parent node arity mismatch");
+                return;
+            }
+            if (!parent){ 
+                throw runtime_error("Parent node not found");
+                return;
+            }
+            if(parent->getChildren().size() < N) {
+                Node<T,N> child(child_node->get_value());
+                parent->addChild(child);
+                return;
+            }
+            
+            throw runtime_error("Parent has the maximum number of children");
+        }
+        Node<T,N>* find_node(Node<T,N>* node, T value);
         // PreOrderIterator<T, N> begin_pre_order() {
         //     return PreOrderIterator<T, N>(&root);
         // }
