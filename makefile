@@ -6,14 +6,29 @@
 CXX = clang++
 CXXFLAGS = -std=c++11 -Werror -Wsign-conversion 
 VALGRIND_FLAGS = -v --leak-check=full --show-leak-kinds=all --error-exitcode=99
+# SFML Libraries
+SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
-SOURCES = tree.cpp node.cpp 
-OBJECTS = $(SOURCES:.cpp=.o)
+# Sources and objects
+DEMO_SOURCES = tree.cpp node.cpp Demo.cpp
+GUI_SOURCES = GUI.cpp
 
-run: demo 
+DEMO_OBJECTS = $(DEMO_SOURCES:.cpp=.o)
+GUI_OBJECTS = $(GUI_SOURCES:.cpp=.o)
 
-demo: Demo.o $(filter-out TestCounter.o Test.o, $(OBJECTS))
-	$(CXX) $(CXXFLAGS) -v $^ -o $@
+# Targets
+all: demo gui
+
+demo: Demo.o $(filter-out TestCounter.o Test.o, $(DEMO_OBJECTS))
+	$(CXX) $(CXXFLAGS) $(DEMO_OBJECTS) -o demo $(SFML_LIBS)
+
+gui: $(GUI_OBJECTS)
+	$(CXX) $(CXXFLAGS) $(GUI_OBJECTS) -o gui $(SFML_LIBS)
+
+# run: demo 
+
+# demo: Demo.o $(filter-out TestCounter.o Test.o, $(OBJECTS))
+# 	$(CXX) $(CXXFLAGS) -v $^ -o $@
 
 test: TestCounter.o Test.o $(filter-out Demo.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) -v $^ -o $@

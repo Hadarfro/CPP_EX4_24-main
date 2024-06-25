@@ -185,26 +185,26 @@ template <typename T,int N> class BFSIterator {
 };
 
 
-template <typename T,int N> class HeapIterator {
-    public:
-        explicit HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
+// template <typename T,int N> class HeapIterator {
+//     public:
+//         explicit HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
 
-        T& operator*() {
-            return *current;
-        }
+//         T& operator*() {
+//             return *current;
+//         }
 
-        HeapIterator& operator++() {
-            ++current;
-            return *this;
-        }
+//         HeapIterator& operator++() {
+//             ++current;
+//             return *this;
+//         }
 
-        bool operator!=(const HeapIterator& other) const {
-            return current != other.current;
-        }
+//         bool operator!=(const HeapIterator& other) const {
+//             return current != other.current;
+//         }
 
-    private:
-        vector<T>::iterator current;
-};
+//     private:
+//         vector<T>::iterator current;
+// };
 
     // HeapIterator begin() {
     //     return HeapIterator(heap.begin());

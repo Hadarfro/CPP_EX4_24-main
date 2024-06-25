@@ -1,50 +1,55 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <vector>
-#include "node.hpp"
-#include "tree.hpp"
-#include <QApplication>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsTextItem>
 
-using namespace std;
+int main()
+{
+    // Create the main window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
 
-template <typename T>
-class TreeWidget : public QGraphicsView {
-public:
-    explicit TreeWidget(Tree<T>& tree) {
-        QGraphicsScene* scene = new QGraphicsScene(this);
-        setScene(scene);
-        render_tree(tree.get_root(), scene, 0, 0, 100);
+    // Set the Icon
+    sf::Image icon;
+    if (!icon.loadFromFile("icon.png")) {
+        return EXIT_FAILURE;
     }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-private:
-    void render_tree(Node<T>* node, QGraphicsScene* scene, int x, int y, int dx) {
-        if (!node) return;
-        QGraphicsTextItem* item = scene->addText(QString::fromStdString(std::to_string(node->value)));
-        item->setPos(x, y);
-        int child_x = x - dx * (node->children.size() - 1) / 2;
-        for (auto& child : node->children) {
-            if (child) {
-                scene->addLine(x + 10, y + 10, child_x + 10, y + 50);
-                render_tree(child.get(), scene, child_x, y + 50, dx / 2);
-                child_x += dx;
-            }
+    // Load a sprite to display
+    sf::Texture texture;
+    if (!texture.loadFromFile("cute_image.jpg")) {
+        return EXIT_FAILURE;
+    }
+    sf::Sprite sprite(texture);
+
+    // Create a graphical text to display
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        return EXIT_FAILURE;
+    }
+    sf::Text text("Hello SFML", font, 50);
+
+    // Start the game loop
+    while (window.isOpen())
+    {
+        // Process events
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // Close window: exit
+            if (event.type == sf::Event::Closed)
+                window.close();
         }
+
+        // Clear screen
+        window.clear();
+
+        // Draw the sprite
+        window.draw(sprite);
+
+        // Draw the string
+        window.draw(text);
+
+        // Update the window
+        window.display();
     }
-};
 
-int main(int argc, char* argv[]) {
-    QApplication app(argc, argv);
-
-    Tree<int> tree;
-    tree.add_root(1);
-    tree.add_sub_node(1, 2);
-    tree.add_sub_node(1, 3);
-
-    TreeWidget<int> widget(tree);
-    widget.show();
-
-    return app.exec();
+    return EXIT_SUCCESS;
 }
