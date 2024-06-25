@@ -42,11 +42,11 @@ void drawTree(sf::RenderWindow& window, Node<T,N>* node, sf::Font& font) {
     text.setFillColor(sf::Color::Black);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
-    //text.setPosition(node->position);
+    text.setPosition(node->position);
     window.draw(text);
 
     // Draw edges to children
-    for (auto child : node->getChildren()) {
+    for (auto child : node->getChildren()) {// problem!!!!!!!!!!!!!!!!!!
         // Draw edge
         sf::Vertex line[] = {
             // sf::Vertex(node->position + sf::Vector2f(circle.getRadius(), circle.getRadius())),
@@ -55,7 +55,7 @@ void drawTree(sf::RenderWindow& window, Node<T,N>* node, sf::Font& font) {
         window.draw(line, 2, sf::Lines);
 
         // Draw child recursively
-        drawTree(window, child, font);
+        drawTree(window, &child, font);
     }
 }
 

@@ -44,4 +44,4 @@ valgrind: demo test
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm -f *.o demo test
+	rm -f *.o demo test gui
