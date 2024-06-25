@@ -14,7 +14,7 @@ using namespace std;
 template <typename T,int N> class PreOrderIterator {
     public:
         explicit PreOrderIterator(Tree<T,N>* root) {
-            if(root){ 
+            if(root->getRoot()){ 
                 stack.push(root->getRoot());
             }
         }
@@ -36,8 +36,8 @@ template <typename T,int N> class PreOrderIterator {
             stack.pop();
 
             // Iterate over children and push non-null children to the stack
-            for (size_t i = 0; i < node->children.size(); ++i) {
-                if (node->getChildren().at(i) != nullptr) {
+            for (size_t i = 0; i < node->getChildren().size(); ++i) {
+                if (node->getChildren()[i] != nullptr) {
                     stack.push(node->getChildren()[i]);
                 }
             }

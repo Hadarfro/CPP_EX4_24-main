@@ -42,7 +42,7 @@ void drawTree(sf::RenderWindow& window, Node<T,N>* node, sf::Font& font) {
     text.setFillColor(sf::Color::Black);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
-    text.setPosition(node->position);
+    //text.setPosition(node->position);
     window.draw(text);
 
     // Draw edges to children

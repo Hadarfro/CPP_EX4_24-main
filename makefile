@@ -10,7 +10,7 @@ VALGRIND_FLAGS = -v --leak-check=full --show-leak-kinds=all --error-exitcode=99
 SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Sources and objects
-DEMO_SOURCES = tree.cpp node.cpp Demo.cpp
+DEMO_SOURCES = tree.cpp node.cpp iterators.hpp Demo.cpp
 GUI_SOURCES = GUI.cpp
 
 DEMO_OBJECTS = $(DEMO_SOURCES:.cpp=.o)
