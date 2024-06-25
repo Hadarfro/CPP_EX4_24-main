@@ -15,7 +15,7 @@ template <typename T,int N> class PreOrderIterator {
     public:
         explicit PreOrderIterator(Tree<T,N>* root) {
             if(root){ 
-                stack.push(root);
+                stack.push(root->getRoot());
             }
         }
 
@@ -28,11 +28,20 @@ template <typename T,int N> class PreOrderIterator {
         }
 
         PreOrderIterator& operator++() {
-            Tree<T,N>* node = stack.top();
-            stack.pop();
-            for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
-                if (*it) stack.push(it->get());
+            if (stack.empty()) {
+                return *this;
             }
+
+            Node<T, N>* node = stack.top();
+            stack.pop();
+
+            // Iterate over children and push non-null children to the stack
+            for (size_t i = 0; i < node->children.size(); ++i) {
+                if (node->getChildren().at(i) != nullptr) {
+                    stack.push(node->getChildren()[i]);
+                }
+            }
+
             return *this;
         }
 
@@ -74,9 +83,9 @@ template <typename T,int N> class InOrderIterator {
             return *this;
         }
 
-        Node<T, N>* operator->() const {
-            return stack.top();
-        }
+        // Node<T, N>* operator->() const {
+        //     return stack.top();
+        // }
 
     private:
         stack<Node<T,N>*> nodes;
@@ -119,9 +128,9 @@ template <typename T,int N> class PostOrderIterator {
                 nodes.pop();
                 if (!nodes.empty()) {
                     Node<T,N>* top = nodes.top();
-                    if (!top->children.empty() && top->children.back().get() == current) {
+                    if (!top->getChildren().empty() && top->children.back().get() == current) {
                         nodes.pop();
-                        findNextLeaf(top);
+                        //findNextLeaf(top);
                     }
                 }
             }
@@ -131,21 +140,22 @@ template <typename T,int N> class PostOrderIterator {
     private:
         stack<Node<T,N>*> nodes;
 
-        void findNextLeaf(Node<T,N>* node) {
-            while (node) {
-                nodes.push(node);
-                if (!node->children.empty()) {
-                    for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
-                        if (*it) {
-                            node = it->get();
-                            break;
-                        }
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
+        // void findNextLeaf(Node<T,N>* node) {
+        //     while (node) {
+        //         nodes.push(node);
+        //         if (!node->children.empty()) {
+        //             for (auto i = 0; i != node->getChildren().size(); ++i) {
+        //                 if (node->getChildren().size() < N) {
+        //                     node = it->get();
+        //                     break;
+        //                 }
+        //             }
+        //         } 
+        //         else {
+        //             break;
+        //         }
+        //     }
+        // }
 };
 
 
