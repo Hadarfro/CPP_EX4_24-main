@@ -13,9 +13,9 @@ using namespace std;
 
 template <typename T,int N> class PreOrderIterator {
     public:
-        explicit PreOrderIterator(Tree<T,N>* root) {
-            if(root->getRoot()){ 
-                stack.push(root->getRoot());
+        explicit PreOrderIterator(Node<T,N>* root) {
+            if(root){ 
+                stack.push(root);
             }
         }
 
@@ -37,9 +37,10 @@ template <typename T,int N> class PreOrderIterator {
 
             // Iterate over children and push non-null children to the stack
             for (size_t i = 0; i < node->getChildren().size(); ++i) {
-                if (node->getChildren()[i] != nullptr) {
-                    stack.push(node->getChildren()[i]);
-                }
+               // if (!node->getChildren()[i]) {
+                    Node<T,N> n = node->getChildren().at(i);
+                    stack.push(&n);
+                //}
             }
 
             return *this;
@@ -106,7 +107,7 @@ template <typename T,int N> class InOrderIterator {
 
 template <typename T,int N> class PostOrderIterator {
     public:
-        explicit PostOrderIterator(Tree<T,N>* root) {
+        explicit PostOrderIterator(Node<T,N>* root) {
             findNextLeaf(root);
         }
 
@@ -128,7 +129,7 @@ template <typename T,int N> class PostOrderIterator {
                 nodes.pop();
                 if (!nodes.empty()) {
                     Node<T,N>* top = nodes.top();
-                    if (!top->getChildren().empty() && top->children.back().get() == current) {
+                    if (!top->getChildren().empty() && top->getChildren().back() == current) {
                         nodes.pop();
                         //findNextLeaf(top);
                     }
@@ -143,7 +144,7 @@ template <typename T,int N> class PostOrderIterator {
         // void findNextLeaf(Node<T,N>* node) {
         //     while (node) {
         //         nodes.push(node);
-        //         if (!node->children.empty()) {
+        //         if (!node->getChildren().empty()) {
         //             for (auto i = 0; i != node->getChildren().size(); ++i) {
         //                 if (node->getChildren().size() < N) {
         //                     node = it->get();
@@ -155,7 +156,7 @@ template <typename T,int N> class PostOrderIterator {
         //             break;
         //         }
         //     }
-        // }
+        //}
 };
 
 

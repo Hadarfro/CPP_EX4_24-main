@@ -42,7 +42,7 @@ template <typename T,int N = 2> class Tree {
         }
         Node<T,N>* find_node(Node<T,N>* node, T value);
         PreOrderIterator<T, N> begin_pre_order() {
-            return PreOrderIterator<T, N>(&root);
+            return PreOrderIterator<T, N>(root);
         }
         PreOrderIterator<T, N> end_pre_order() {
             return PreOrderIterator<T, N>(nullptr);

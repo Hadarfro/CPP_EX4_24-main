@@ -39,8 +39,7 @@ int main()
         cout << node->get_value() << endl;
     } // prints: 1.1, 1.2, 1.4, 1.5, 1.3, 1.6
 
-    // for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node)
-    // {
+    // for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node){
     //     cout << node->get_value() << endl;
     // } // prints: 1.4, 1.5, 1.2, 1.6, 1.3, 1.1
 
