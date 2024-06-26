@@ -31,18 +31,16 @@ template <typename T,int N> class PreOrderIterator {
             if (stack.empty()) {
                 return *this;
             }
-
+            
             Node<T, N>* node = stack.top();
             stack.pop();
-
             // Iterate over children and push non-null children to the stack
-            for (size_t i = 0; i < node->getChildren().size(); ++i) {
-               // if (!node->getChildren()[i]) {
-                    Node<T,N> n = node->getChildren().at(i);
-                    stack.push(&n);
-                //}
+            for (size_t i = node->getChildren().size(); i > 0; --i) {
+                Node<T, N>* n = node->getChildren().at(i - 1);
+                if (n != nullptr) { // Check if the child is non-null before pushing
+                    stack.push(n);
+                }
             }
-
             return *this;
         }
 
@@ -119,6 +117,10 @@ template <typename T,int N> class PostOrderIterator {
             return nodes == other.nodes;
         }
 
+        Node<T, N>* operator->() const {
+            return nodes.top();
+        }
+
         Node<T,N>& operator*() const {
             return *nodes.top();
         }
@@ -141,22 +143,22 @@ template <typename T,int N> class PostOrderIterator {
     private:
         stack<Node<T,N>*> nodes;
 
-        // void findNextLeaf(Node<T,N>* node) {
-        //     while (node) {
-        //         nodes.push(node);
-        //         if (!node->getChildren().empty()) {
-        //             for (auto i = 0; i != node->getChildren().size(); ++i) {
-        //                 if (node->getChildren().size() < N) {
-        //                     node = it->get();
-        //                     break;
-        //                 }
-        //             }
-        //         } 
-        //         else {
-        //             break;
-        //         }
-        //     }
-        //}
+        void findNextLeaf(Node<T,N>* node) {
+            while (node) {
+                nodes.push(node);
+                if (!node->getChildren().empty()) {
+                    for (auto i = 0; i != node->getChildren().size(); ++i) {
+                        if (node->getChildren().size() < N) {
+                            // node = it->get();
+                            break;
+                        }
+                    }
+                } 
+                else {
+                    break;
+                }
+            }
+        }
 };
 
 

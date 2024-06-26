@@ -10,18 +10,18 @@ template <typename T,int N>
 Tree<T,N> createSampleTree() {
     Node<double,2> root_node(1.1);
     Tree<double,2> tree; // Binary tree that contains doubles.
-    tree.add_root(root_node); // problem!!!!
+    tree.add_root(&root_node); // problem!!!!
     Node<double,2> n1(1.2);
     Node<double,2> n2(1.3);
     Node<double,2> n3(1.4);
     Node<double,2> n4(1.5);
     Node<double,2> n5(1.6);
 
-    tree.add_sub_node(&root_node, &n1);
-    tree.add_sub_node(&root_node, &n2);
-    tree.add_sub_node(&n1, &n3);
-    tree.add_sub_node(&n1, &n4);
-    tree.add_sub_node(&n2, &n5);
+    tree.add_sub_node(root_node, n1);
+    tree.add_sub_node(root_node, n2);
+    tree.add_sub_node(n1, n3);
+    tree.add_sub_node(n1, n4);
+    tree.add_sub_node(n2, n5);
     
     return tree;
 }
@@ -62,7 +62,7 @@ void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, sf::Ve
         childPosition.y += levelSpacing;
         childPosition.x -= siblingSpacing * (children.size() - 1) / 2.f;
 
-        for (auto& child : children) {
+        for (size_t i = 0;i < node->getChildren().size();i++) {
             // Draw edge
             sf::Vertex line[] = {
                 sf::Vertex(position),
@@ -71,7 +71,7 @@ void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, sf::Ve
             window.draw(line, 2, sf::Lines);
 
             // Draw child recursively
-            drawTree(window, &child, font, childPosition, levelSpacing, siblingSpacing);
+            drawTree(window, node->getChildren()[i], font, childPosition, levelSpacing, siblingSpacing);
 
             // Update position for the next child
             childPosition.x += siblingSpacing;
@@ -104,9 +104,9 @@ int main() {
         window.clear(sf::Color::White);
         sf::Vector2u windowSize = window.getSize();
         sf::Vector2f rootPosition(windowSize.x / 2.f, 100.f);
-        drawTree(window,root.getRoot() , font, rootPosition,100.f,50.f);
+        drawTree(window,root.getRoot() , font, rootPosition,(float)100.f,(float)50.f);
         // Draw the tree starting from the root
-        // drawTree(window, root.getRoot(), font);
+        //drawTree(window, root.getRoot(), font);
 
         window.display();
     }

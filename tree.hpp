@@ -11,8 +11,8 @@ template <typename T,int N = 2> class Tree {
     public:
         Tree() : maxChildren(N), root(nullptr) {}
 
-        void add_root(Node<T,N> node) {
-            root = &node;
+        void add_root(Node<T,N>* node) {
+            root = node;
         }
         Node<T,N>* getRoot(){
             return root;
@@ -20,7 +20,7 @@ template <typename T,int N = 2> class Tree {
         //class BFSIterator;
         BFSIterator<T,N> begin() { return BFSIterator<T,N>(&root); }
         BFSIterator<T,N> end() { return BFSIterator<T,N>(nullptr); }
-        void add_sub_node(Node<T,N>* parent_node, Node<T,N>* child_node) {
+        void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
             // Check if child node has the same arity as parent
             // Node<T,N>* parent = find_node(root, parent_node->get_value());
             // if (parent->getChildren().size() > N) {
@@ -31,9 +31,8 @@ template <typename T,int N = 2> class Tree {
             //     throw runtime_error("Parent node not found");
             //     return;
             // }
-            if(parent_node->getChildren().size() < N) {
-                Node<T,N> child(child_node->get_value());
-                parent_node->addChild(child);
+            if(parent_node.getChildren().size() < N) {
+                parent_node.addChild(&child_node);
                 return;
             }
             cout << "Parent has the maximum number of children" << endl;
@@ -48,7 +47,7 @@ template <typename T,int N = 2> class Tree {
             return PreOrderIterator<T, N>(nullptr);
         }
         PostOrderIterator<T, N> begin_post_order() {
-            return PostOrderIterator<T, N>(&root);
+            return PostOrderIterator<T, N>(root);
         }
         PostOrderIterator<T, N> end_post_order() {
             return PostOrderIterator<T, N>(nullptr);
