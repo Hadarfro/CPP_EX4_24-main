@@ -26,15 +26,24 @@ Tree<T,N> createSampleTree() {
     return tree;
 }
 
-// Function to draw a node with its children recursively
-template <typename T,int N>
-void drawTree(sf::RenderWindow& window, Node<T,N>* node, sf::Font& font) {
+// Overloaded function with default root position
+// template <typename T, int N>
+// void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, float levelSpacing = 100.f, float siblingSpacing = 50.f) {
+//     // Get window size and calculate root position
+//     sf::Vector2u windowSize = window.getSize();
+//     sf::Vector2f rootPosition(windowSize.x / 2.f, 100.f);
+//     drawTree(window, node, font, rootPosition, levelSpacing, siblingSpacing);
+// }
+
+// Original function with position parameter
+template <typename T, int N>
+void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, sf::Vector2f position, float levelSpacing, float siblingSpacing) {
     // Draw node itself
     sf::CircleShape circle(30.f);
     circle.setOutlineThickness(2.f);
     circle.setOutlineColor(sf::Color::Black);
     circle.setFillColor(sf::Color::White);
-    //circle.setPosition(node->position.x - circle.getRadius(), node->position.y - circle.getRadius());
+    circle.setPosition(position.x - circle.getRadius(), position.y - circle.getRadius());
     window.draw(circle);
 
     // Draw node value as text
@@ -42,22 +51,34 @@ void drawTree(sf::RenderWindow& window, Node<T,N>* node, sf::Font& font) {
     text.setFillColor(sf::Color::Black);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
-    //text.setPosition(node->position);
+    text.setPosition(position);
     window.draw(text);
 
-    // Draw edges to children
-    for (auto child : node->getChildren()) {// problem!!!!!!!!!!!!!!!!!!
-        // Draw edge
-        sf::Vertex line[] = {
-            // sf::Vertex(node->position + sf::Vector2f(circle.getRadius(), circle.getRadius())),
-            // sf::Vertex(child->position + sf::Vector2f(circle.getRadius(), circle.getRadius()))
-        };
-        window.draw(line, 2, sf::Lines);
+    // Draw edges to children and position children nodes
+    const auto& children = node->getChildren();
+    if (!children.empty()) {
+        // Calculate initial position for the first child
+        sf::Vector2f childPosition = position;
+        childPosition.y += levelSpacing;
+        childPosition.x -= siblingSpacing * (children.size() - 1) / 2.f;
 
-        // Draw child recursively
-        drawTree(window, &child, font);
+        for (auto& child : children) {
+            // Draw edge
+            sf::Vertex line[] = {
+                sf::Vertex(position),
+                sf::Vertex(childPosition)
+            };
+            window.draw(line, 2, sf::Lines);
+
+            // Draw child recursively
+            drawTree(window, &child, font, childPosition, levelSpacing, siblingSpacing);
+
+            // Update position for the next child
+            childPosition.x += siblingSpacing;
+        }
     }
 }
+
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tree Visualization with SFML");
@@ -65,7 +86,7 @@ int main() {
     // Load font
     sf::Font font;
     if (!font.loadFromFile("/home/hadarfro/Downloads/Roboto/Roboto-Black.ttf")) {
-        std::cerr << "Failed to load font 'arial.ttf'" << std::endl;
+        cerr << "Failed to load font 'arial.ttf'" << endl;
         return -1;
     }
 
@@ -81,9 +102,11 @@ int main() {
         }
 
         window.clear(sf::Color::White);
-
+        sf::Vector2u windowSize = window.getSize();
+        sf::Vector2f rootPosition(windowSize.x / 2.f, 100.f);
+        drawTree(window,root.getRoot() , font, rootPosition,100.f,50.f);
         // Draw the tree starting from the root
-        drawTree(window, root.getRoot(), font);
+        // drawTree(window, root.getRoot(), font);
 
         window.display();
     }

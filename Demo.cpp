@@ -18,7 +18,6 @@ int main()
     Node<double,2> n3(1.4);
     Node<double,2> n4(1.5);
     Node<double,2> n5(1.6);
-    cout << "test" << endl;
 
     tree.add_sub_node(&root_node, &n1);
     tree.add_sub_node(&root_node, &n2);
