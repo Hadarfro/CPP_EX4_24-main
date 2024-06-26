@@ -106,6 +106,7 @@ template <typename T,int N> class InOrderIterator {
 template <typename T,int N> class PostOrderIterator {
     public:
         explicit PostOrderIterator(Node<T,N>* root) {
+            cout << root->getChildren().size() << " " << N << endl;
             findNextLeaf(root);
         }
 
@@ -125,15 +126,16 @@ template <typename T,int N> class PostOrderIterator {
             return *nodes.top();
         }
 
-        PostOrderIterator& operator++() {
-            if (!nodes.empty()) {
+        PostOrderIterator& operator++(){
+            if (!nodes.empty()){
+                cout << "testing" << endl;
                 Node<T,N>* current = nodes.top();
                 nodes.pop();
                 if (!nodes.empty()) {
                     Node<T,N>* top = nodes.top();
                     if (!top->getChildren().empty() && top->getChildren().back() == current) {
                         nodes.pop();
-                        //findNextLeaf(top);
+                        findNextLeaf(top);
                     }
                 }
             }
@@ -144,14 +146,15 @@ template <typename T,int N> class PostOrderIterator {
         stack<Node<T,N>*> nodes;
 
         void findNextLeaf(Node<T,N>* node) {
-            while (node) {
+            while(node){
                 nodes.push(node);
-                if (!node->getChildren().empty()) {
-                    for (auto i = 0; i != node->getChildren().size(); ++i) {
-                        if (node->getChildren().size() < N) {
-                            // node = it->get();
+                if (!node->getChildren().empty()){
+                    for (size_t i = 0; i < node->getChildren().size(); i++) {
+                        cout << "test" << endl;
+                        //if (node->getChildren().size() < N) {
+                            node = node->getChildren().at(i);
                             break;
-                        }
+                        //}
                     }
                 } 
                 else {
