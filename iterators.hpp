@@ -172,13 +172,29 @@ template <typename T,int N> class BFSIterator {
             }
         }
 
+        Node<T, N>* operator->() const {
+            return nodes.front();
+        }
+
+         Node<T,N>& operator*() const {
+            return *nodes.front();
+        }
+
+        bool operator!=(const BFSIterator& other) const {
+            return !(*this == other);
+        }
+
+        bool operator==(const BFSIterator& other) const {
+            return nodes == other.nodes;
+        }
+
         BFSIterator& operator++() {
             if (!nodes.empty()) {
                 Node<T,N>* current = nodes.front();
                 nodes.pop();
-                for (auto& child : current->children) {
+                for (auto& child : current->getChildren()) {
                     if (child) {
-                        nodes.push(child.get());
+                        nodes.push(child);
                     }
                 }
             }

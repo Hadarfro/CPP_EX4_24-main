@@ -18,7 +18,7 @@ template <typename T,int N = 2> class Tree {
             return root;
         } 
         //class BFSIterator;
-        BFSIterator<T,N> begin() { return BFSIterator<T,N>(&root); }
+        BFSIterator<T,N> begin() { return BFSIterator<T,N>(root); }
         BFSIterator<T,N> end() { return BFSIterator<T,N>(nullptr); }
         void add_sub_node(Node<T,N>& parent_node, Node<T,N>& child_node) {
             // Check if child node has the same arity as parent
@@ -59,7 +59,7 @@ template <typename T,int N = 2> class Tree {
             return InOrderIterator<T, N>(nullptr);
         }
         BFSIterator<T,N> begin_bfs_scan() {
-            return BFSIterator<T,N>(&root);
+            return BFSIterator<T,N>(root);
         }
         BFSIterator<T,N> end_bfs_scan() {
             return BFSIterator<T,N>(nullptr);
