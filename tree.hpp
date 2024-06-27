@@ -53,7 +53,7 @@ template <typename T,int N = 2> class Tree {
             return PostOrderIterator<T, N>(nullptr);
         }
         InOrderIterator<T, N> begin_in_order() {
-            return InOrderIterator<T, N>(&root);
+            return InOrderIterator<T, N>(root);
         }
         InOrderIterator<T, N> end_in_order() {
             return InOrderIterator<T, N>(nullptr);

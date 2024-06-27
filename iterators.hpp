@@ -55,7 +55,7 @@ template <typename T,int N> class PreOrderIterator {
 
 template <typename T,int N> class InOrderIterator {
     public:
-        explicit InOrderIterator(Tree<T,N>* root) {
+        explicit InOrderIterator(Node<T,N>* root) {
             pushLeft(root);
         }
 
@@ -75,16 +75,16 @@ template <typename T,int N> class InOrderIterator {
             if (!nodes.empty()) {
                 Node<T,N>* current = nodes.top();
                 nodes.pop();
-                if (!current->children.empty()) {
-                    pushLeft(current->children[1].get());
+                if (!current->getChildren().empty()) {
+                    pushLeft(current->getChildren()[1]);
                 }
             }
             return *this;
         }
 
-        // Node<T, N>* operator->() const {
-        //     return stack.top();
-        // }
+        Node<T, N>* operator->() const {
+            return nodes.top();
+        }
 
     private:
         stack<Node<T,N>*> nodes;
@@ -92,8 +92,8 @@ template <typename T,int N> class InOrderIterator {
         void pushLeft(Node<T,N>* node) {
             while (node) {
                 nodes.push(node);
-                if (!node->children.empty()) {
-                    node = node->children[0].get();
+                if (!node->getChildren().empty()) {
+                    node = node->getChildren()[0];
                 } 
                 else {
                     break;
