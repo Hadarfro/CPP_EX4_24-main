@@ -7,12 +7,17 @@
 #include "iterators.hpp"
 
 
-template <typename T,int N = 2> class Tree {
+template <typename T,int N> class Tree {
     public:
         Tree() : maxChildren(N), root(nullptr) {}
 
         void add_root(Node<T,N>* node) {
-            root = node;
+             if (root) {
+                cerr << "Tree already has a root." << endl;
+            } 
+            else {
+                root = node;
+            }
         }
         Node<T,N>* getRoot(){
             return root;

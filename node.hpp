@@ -30,6 +30,9 @@ template<typename T,int N = 2> class Node {
             if(children.size() < maxChild){
                 children.push_back(node);
             }
+             else {
+                cerr << "Node cannot have more than " << N << " children." << std::endl;
+            }
         }
 
         // Destructor to clean up the memory allocated for children
