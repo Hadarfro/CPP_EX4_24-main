@@ -73,7 +73,7 @@ template <typename T,int N> class InOrderIterator {
 
         InOrderIterator& operator++() {
             if (!nodes.empty()) {
-                Node<T>* current = nodes.top();
+                Node<T,N>* current = nodes.top();
                 nodes.pop();
                 if (!current->children.empty()) {
                     pushLeft(current->children[1].get());
@@ -106,8 +106,9 @@ template <typename T,int N> class InOrderIterator {
 template <typename T,int N> class PostOrderIterator {
     public:
         explicit PostOrderIterator(Node<T,N>* root) {
-            cout << root->getChildren().size() << " " << N << endl;
-            findNextLeaf(root);
+            if (root) {
+                findNextLeaf(root);
+            }
         }
 
         bool operator!=(const PostOrderIterator& other) const {
@@ -128,7 +129,6 @@ template <typename T,int N> class PostOrderIterator {
 
         PostOrderIterator& operator++(){
             if (!nodes.empty()){
-                cout << "testing" << endl;
                 Node<T,N>* current = nodes.top();
                 nodes.pop();
                 if (!nodes.empty()) {
@@ -146,16 +146,15 @@ template <typename T,int N> class PostOrderIterator {
         stack<Node<T,N>*> nodes;
 
         void findNextLeaf(Node<T,N>* node) {
+            size_t j = 0;
             while(node){
                 nodes.push(node);
                 if (!node->getChildren().empty()){
-                    for (size_t i = 0; i < node->getChildren().size(); i++) {
-                        cout << "test" << endl;
-                        //if (node->getChildren().size() < N) {
-                            node = node->getChildren().at(i);
-                            break;
-                        //}
+                    for (size_t i = j; i < node->getChildren().size(); i++) {
+                        node = node->getChildren().at(i);
+                        break;
                     }
+                    j++;
                 } 
                 else {
                     break;
