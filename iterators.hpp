@@ -6,14 +6,14 @@
 #include <queue>
 #include <algorithm>
 
-template <typename T, int N>
+template <typename T>
 class Tree;
 
 using namespace std;
 
-template <typename T,int N> class PreOrderIterator {
+template <typename T> class PreOrderIterator {
     public:
-        explicit PreOrderIterator(Node<T,N>* root) {
+        explicit PreOrderIterator(Node<T>* root) {
             if(root){ 
                 stack.push(root);
             }
@@ -32,11 +32,11 @@ template <typename T,int N> class PreOrderIterator {
                 return *this;
             }
             
-            Node<T, N>* node = stack.top();
+            Node<T>* node = stack.top();
             stack.pop();
             // Iterate over children and push non-null children to the stack
             for (size_t i = node->getChildren().size(); i > 0; --i) {
-                Node<T, N>* n = node->getChildren().at(i - 1);
+                Node<T>* n = node->getChildren().at(i - 1);
                 if (n != nullptr) { // Check if the child is non-null before pushing
                     stack.push(n);
                 }
@@ -44,18 +44,18 @@ template <typename T,int N> class PreOrderIterator {
             return *this;
         }
 
-        Node<T, N>* operator->() const {
+        Node<T>* operator->() const {
             return stack.top();
         }
 
     private:
-        stack<Node<T,N>*> stack;
+        stack<Node<T>*> stack;
 };
 
 
-template <typename T,int N> class InOrderIterator {
+template <typename T> class InOrderIterator {
     public:
-        explicit InOrderIterator(Node<T,N>* root) {
+        explicit InOrderIterator(Node<T>* root) {
             pushLeft(root);
         }
 
@@ -67,13 +67,13 @@ template <typename T,int N> class InOrderIterator {
             return nodes == other.nodes;
         }
 
-        Node<T,N>& operator*() const {
+        Node<T>& operator*() const {
             return *nodes.top();
         }
 
         InOrderIterator& operator++() {
             if (!nodes.empty()) {
-                Node<T,N>* current = nodes.top();
+                Node<T>* current = nodes.top();
                 nodes.pop();
                 if (!current->getChildren().empty()) {
                     pushLeft(current->getChildren()[1]);
@@ -82,14 +82,14 @@ template <typename T,int N> class InOrderIterator {
             return *this;
         }
 
-        Node<T, N>* operator->() const {
+        Node<T>* operator->() const {
             return nodes.top();
         }
 
     private:
-        stack<Node<T,N>*> nodes;
+        stack<Node<T>*> nodes;
 
-        void pushLeft(Node<T,N>* node) {
+        void pushLeft(Node<T>* node) {
             while (node) {
                 nodes.push(node);
                 if (!node->getChildren().empty()) {
@@ -103,9 +103,9 @@ template <typename T,int N> class InOrderIterator {
 };
 
 
-template <typename T,int N> class PostOrderIterator {
+template <typename T> class PostOrderIterator {
     public:
-        explicit PostOrderIterator(Node<T,N>* root) {
+        explicit PostOrderIterator(Node<T>* root) {
             if (root) {
                 findNextLeaf(root);
             }
@@ -119,20 +119,20 @@ template <typename T,int N> class PostOrderIterator {
             return nodes == other.nodes;
         }
 
-        Node<T, N>* operator->() const {
+        Node<T>* operator->() const {
             return nodes.top();
         }
 
-        Node<T,N>& operator*() const {
+        Node<T>& operator*() const {
             return *nodes.top();
         }
 
         PostOrderIterator& operator++(){
             if (!nodes.empty()){
-                Node<T,N>* current = nodes.top();
+                Node<T>* current = nodes.top();
                 nodes.pop();
                 if (!nodes.empty()) {
-                    Node<T,N>* top = nodes.top();
+                    Node<T>* top = nodes.top();
                     if (!top->getChildren().empty() && top->getChildren().back() == current) {
                         nodes.pop();
                         findNextLeaf(top);
@@ -143,9 +143,9 @@ template <typename T,int N> class PostOrderIterator {
         }
 
     private:
-        stack<Node<T,N>*> nodes;
+        stack<Node<T>*> nodes;
 
-        void findNextLeaf(Node<T,N>* node) {
+        void findNextLeaf(Node<T>* node) {
             size_t j = 0;
             while(node){
                 nodes.push(node);
@@ -164,19 +164,19 @@ template <typename T,int N> class PostOrderIterator {
 };
 
 
-template <typename T,int N> class BFSIterator {
+template <typename T> class BFSIterator {
     public:
-        explicit BFSIterator(Node<T,N>* root) {
+        explicit BFSIterator(Node<T>* root) {
             if (root) {
                 nodes.push(root);
             }
         }
 
-        Node<T, N>* operator->() const {
+        Node<T>* operator->() const {
             return nodes.front();
         }
 
-         Node<T,N>& operator*() const {
+         Node<T>& operator*() const {
             return *nodes.front();
         }
 
@@ -190,7 +190,7 @@ template <typename T,int N> class BFSIterator {
 
         BFSIterator& operator++() {
             if (!nodes.empty()) {
-                Node<T,N>* current = nodes.front();
+                Node<T>* current = nodes.front();
                 nodes.pop();
                 for (auto& child : current->getChildren()) {
                     if (child) {
@@ -202,7 +202,7 @@ template <typename T,int N> class BFSIterator {
         }
 
     private:
-        queue<Node<T,N>*> nodes;
+        queue<Node<T>*> nodes;
 };
 
 

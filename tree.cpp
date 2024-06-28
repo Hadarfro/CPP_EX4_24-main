@@ -28,8 +28,8 @@ using namespace std;
 /// }
 
 
-template <typename T,int N>
-Node<T,N>* Tree<T,N>::find_node(Node<T,N>* node, T value) {
+template <typename T>
+Node<T>* Tree<T>::find_node(Node<T>* node, T value) {
     if (!node){
      return nullptr;
     }
@@ -37,7 +37,7 @@ Node<T,N>* Tree<T,N>::find_node(Node<T,N>* node, T value) {
         return node;
     }
     for (auto& child : node->children) {
-        Node<T,N>* found = find_node(child.get(), value);
+        Node<T>* found = find_node(child.get(), value);
         if (found){
             return found;
         } 

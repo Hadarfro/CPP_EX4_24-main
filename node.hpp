@@ -7,14 +7,14 @@
 using namespace std;
 
 
-template<typename T,int N = 2> class Node {
+template<typename T> class Node {
     private:
         T value;
         int maxChild;
-        vector<Node<T,N>*> children;
+        vector<Node<T>*> children;
     public:
         // Constructor to initialize the node with a value
-        explicit Node(T val, vector<Node<T,N>*> k = {}) : value(val), children(k), maxChild(N) {
+        explicit Node(T val, vector<Node<T>*> k = {},int maxC = 2) : value(val), children(k), maxChild(maxC) {
             //children.resize(2);
         }
 
@@ -22,17 +22,17 @@ template<typename T,int N = 2> class Node {
             return value;
         }
 
-        vector<Node<T,N>*> getChildren(){
+        vector<Node<T>*> getChildren(){
             return children;
         }
 
-        void addChild(Node<T,N>* node){
-            if(children.size() < maxChild){
+        void addChild(Node<T>* node){
+            //if(children.size() < maxChild){
                 children.push_back(node);
-            }
-             else {
-                cerr << "Node cannot have more than " << N << " children." << std::endl;
-            }
+            // }
+            //  else {
+            //     cerr << "Node cannot have more than " << maxChild << " children." << std::endl;
+            // }
         }
 
         // Destructor to clean up the memory allocated for children

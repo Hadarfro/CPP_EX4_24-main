@@ -6,16 +6,16 @@
 
 
 // Function to create a sample tree
-template <typename T,int N>
-Tree<T,N> createSampleTree() {
-    Node<double,2> root_node(1.1);
-    Tree<double,2> tree; // Binary tree that contains doubles.
+template <typename T>
+Tree<T> createSampleTree() {
+    Node<double> root_node(1.1);
+    Tree<double> tree; // Binary tree that contains doubles.
     tree.add_root(&root_node); // problem!!!!
-    Node<double,2> n1(1.2);
-    Node<double,2> n2(1.3);
-    Node<double,2> n3(1.4);
-    Node<double,2> n4(1.5);
-    Node<double,2> n5(1.6);
+    Node<double> n1(1.2);
+    Node<double> n2(1.3);
+    Node<double> n3(1.4);
+    Node<double> n4(1.5);
+    Node<double> n5(1.6);
 
     tree.add_sub_node(root_node, n1);
     tree.add_sub_node(root_node, n2);
@@ -36,8 +36,8 @@ Tree<T,N> createSampleTree() {
 // }
 
 // Original function with position parameter
-template <typename T, int N>
-void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, sf::Vector2f position, float levelSpacing, float siblingSpacing) {
+template <typename T>
+void drawTree(sf::RenderWindow& window, Node<T>* node, sf::Font& font, sf::Vector2f position, float levelSpacing, float siblingSpacing) {
     // Draw node itself
     sf::CircleShape circle(30.f);
     circle.setOutlineThickness(2.f);
@@ -91,7 +91,7 @@ int main() {
     }
 
     // Create a sample tree
-    Tree<double,2> root = createSampleTree<double,2>();
+    Tree<double> root = createSampleTree<double>();
 
     // Main loop
     while (window.isOpen()) {
