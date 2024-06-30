@@ -23,10 +23,6 @@ template <typename T> class PreOrderIterator {
             return !stack.empty();
         }
 
-        const T& operator*() const {
-            return stack.top()->value;
-        }
-
         PreOrderIterator& operator++() {
             if (stack.empty()) {
                 return *this;

@@ -3,12 +3,14 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "node.hpp"
 #include "tree.hpp"
-
+using namespace sf;
+using namespace std;
 
 // Function to create a sample tree
 template <typename T>
-Tree<T> createSampleTree() {
+Tree<T>* createSampleTree() {
     Node<double> root_node(1.1);
     Tree<double> tree; // Binary tree that contains doubles.
     tree.add_root(&root_node);
@@ -23,54 +25,57 @@ Tree<T> createSampleTree() {
     tree.add_sub_node(n1, n3);
     tree.add_sub_node(n1, n4);
     tree.add_sub_node(n2, n5);
-    
+    cout << "the node is: " << tree.getRoot()->get_value() << endl;
     return tree;
 }
 
 template <typename T>
-void drawTree(sf::RenderWindow& window, Node<T>* node, sf::Font& font, sf::Vector2f position, float levelSpacing, float siblingSpacing) {
-    if (!node){ 
+void drawTree(RenderWindow& window, Node<T>* node, const Font& font, int x, int y, unsigned long level = 0) {
+    if (!node) {
         return;
     }
+    if(node->getChildren().size() > 0){
+        unsigned long HORIZONTAL_SPACING = 150 / (level + 1);
+        int VERTICAL_SPACING = 100;
+        int RADIUS = 30;
+        size_t childrenCount = node->getChildren().size();
+        
+        //Draw the value inside the node
+        Text text(to_string(node->get_value()), font, 10);
+        float textWidth = text.getLocalBounds().width;
+        text.setFillColor(Color::White);
+        text.setPosition(x - textWidth / 2, y - 10);
 
-    // Draw node circle
-    sf::CircleShape circle(50.f);
-    circle.setOutlineThickness(2.f);
-    circle.setOutlineColor(sf::Color::Black);
-    circle.setFillColor(sf::Color::White);
-    circle.setPosition(position.x - circle.getRadius(), position.y - circle.getRadius());
-    window.draw(circle);
+        //Draw the node itself
+        CircleShape shape(RADIUS);
+        shape.setFillColor(Color::Black);
+        shape.setPosition(x-RADIUS, y-RADIUS);
+        
+        
+        for(size_t i = 0; i < childrenCount; i++) {
+                
+            int offset = (i - childrenCount / 2) * (level + 1) * HORIZONTAL_SPACING;
+            int childX = x + offset;
+            int childY = y + VERTICAL_SPACING;
 
-    // Draw node value as text
-    sf::Text text(to_string(node->get_value()), font, 20);
-    text.setFillColor(sf::Color::Black);
-    sf::FloatRect textRect = text.getLocalBounds();
-    text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
-    text.setPosition(position);
-    window.draw(text);
-
-    // Draw edges to children and position children nodes
-    vector<Node<T>*> children = node->getChildren();//problem!!!!!!!!!!!!!!!!!!!!
-    if (!children.empty()) {
-        sf::Vector2f childPosition = position;
-        childPosition.y += levelSpacing;
-        childPosition.x -= siblingSpacing * (children.size() - 1) / 2.f;
-
-        for (auto* child : children) {
-            sf::Vertex line[] = {
-                sf::Vertex(position),
-                sf::Vertex(childPosition)
+            // Draw line to child
+            Vertex line[] = {
+                Vertex(Vector2f(x, y + RADIUS),Color::White),
+                Vertex(Vector2f(childX, childY - RADIUS),Color::Black)
             };
-            window.draw(line, 2, sf::Lines);
 
-            // Recursively draw child nodes
-            drawTree(window, child, font, childPosition, levelSpacing, siblingSpacing);
-
-            // Update position for the next child
-            childPosition.x += siblingSpacing;
-        }
+                window.draw(line, 2, Lines);
+                Node<T>* n = node->getChildren().at(i);
+                //cout << "node number: " << n->get_value() << endl;
+                drawTree(window, node->getChildren()[i], font, childX, childY, level + 1);
+            }
+        
+        window.draw(shape);
+        window.draw(text);
     }
+    
 }
+    
 
 
 int main() {
@@ -84,34 +89,38 @@ int main() {
     }
 
     // Create a sample tree
-    Tree<double> root = createSampleTree<double>();
+    //Tree<double> *root = createSampleTree<double>();
+    //cout << "test" << endl;
+    Node<double> root_node(1.1);
+    Tree<double> tree; // Binary tree that contains doubles.
+    tree.add_root(&root_node);
+    Node<double> n1(1.2);
+    Node<double> n2(1.3);
+    Node<double> n3(1.4);
+    Node<double> n4(1.5);
+    Node<double> n5(1.6);
 
-    // Main loop
+    tree.add_sub_node(root_node, n1);
+    tree.add_sub_node(root_node, n2);
+    tree.add_sub_node(n1, n3);
+    tree.add_sub_node(n1, n4);
+    tree.add_sub_node(n2, n5);
+    if(!tree.getRoot()){
+        return 0;
+    }
+    //cout << "the size is: "<< tree.getRoot()->getChildren().size() << endl;
+
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed){
                 window.close();
+            }
         }
-
-        window.clear(sf::Color::White);
-        sf::Vector2u windowSize = window.getSize();
-        sf::Vector2f rootPosition(windowSize.x / 2.f, 100.f);
-        drawTree(window,root.getRoot() , font, rootPosition,(float)100.f,(float)50.f);
-        // Draw the tree starting from the root
-        //drawTree(window, root.getRoot(), font);
-
+        window.clear(Color::White);
+        //cout << "the node is: " << tree.getRoot()->get_value() << endl;
+        drawTree(window, tree.getRoot(), font, 400, 50);
         window.display();
     }
-
-    // Clean up allocated memory
-    // This is simplified and for demonstration purposes only
-    // delete root.->children[0]->children[0];
-    // delete root->children[0]->children[1];
-    // delete root->children[1]->children[0];
-    // delete root->children[1];
-    // delete root->children[0];
-    // delete root;
-
     return 0;
 }

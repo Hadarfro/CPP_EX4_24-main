@@ -21,7 +21,7 @@ template<typename T> class Node {
             return value;
         }
 
-        vector<Node<T>*>& getChildren(){
+        vector<Node<T>*> getChildren(){
             return children;
         }
 
