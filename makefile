@@ -10,10 +10,12 @@ VALGRIND_FLAGS = -v --leak-check=full --show-leak-kinds=all --error-exitcode=99
 SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Sources and objects
-DEMO_SOURCES = tree.cpp node.cpp Demo.cpp Test.cpp TestCounter.cpp
+DEMO_SOURCES = tree.cpp node.cpp Demo.cpp
+TEST_SOURCES = tree.cpp node.cpp Test.cpp TestCounter.cpp
 GUI_SOURCES = GUI.cpp
 
 DEMO_OBJECTS = $(DEMO_SOURCES:.cpp=.o)
+TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
 GUI_OBJECTS = $(GUI_SOURCES:.cpp=.o)
 
 # Targets
@@ -25,9 +27,8 @@ demo: $(DEMO_OBJECTS)
 gui: $(GUI_OBJECTS)
 	$(CXX) $(CXXFLAGS) $(GUI_OBJECTS) -o gui $(SFML_LIBS)
 
-test: TestCounter.o Test.o $(filter-out Demo.o, $(DEMO_OBJECTS))
-	$(CXX) $(CXXFLAGS) -v $^ -o $@
-	
+test: $(TEST_OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o test
 
 tidy:
 	clang-tidy $(DEMO_SOURCES) $(GUI_SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
