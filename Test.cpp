@@ -58,8 +58,8 @@ TEST_CASE("Test InOrderIterator") {
 
     SUBCASE("In-order Traversal") {
         vector<int> values;
-        for (auto it = InOrderIterator<int>(&root); it != InOrderIterator<int>(nullptr); ++it) {
-            values.push_back(it->get_value());
+        for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node){
+            values.push_back(node->get_value());
         }
         vector<int> expected = {4, 2, 5, 1, 3, 6};
         CHECK(values == expected);
@@ -84,8 +84,8 @@ TEST_CASE("Test PostOrderIterator") {
 
     SUBCASE("Post-order Traversal") {
         vector<int> values;
-        for (auto it = PostOrderIterator<int>(&root); it != PostOrderIterator<int>(nullptr); ++it) {
-            values.push_back(it->get_value());
+        for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node){
+            values.push_back(node->get_value());
         }
         vector<int> expected = {4, 5, 2, 6, 3, 1};
         CHECK(values == expected);
