@@ -4,6 +4,8 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <iterator>
+#include <memory>
 #include <algorithm>
 
 template <typename T>
@@ -201,35 +203,64 @@ template <typename T> class BFSIterator {
         queue<Node<T>*> nodes;
 };
 
+template <typename T>
+class DFSIterator {
+    public:
+        explicit DFSIterator(Node<T>* root) {
+            if (root) {
+                nodes.push(root);
+            }
+        }
 
-// template <typename T,int N> class HeapIterator {
-//     public:
-//         explicit HeapIterator(vector<T>::HeapIterator it = {}) : current(it) {}
+        Node<T>* operator->() const {
+            return nodes.top();
+        }
 
-//         T& operator*() {
-//             return *current;
+        Node<T>& operator*() const {
+            return *nodes.top();
+        }
+
+        bool operator!=(const DFSIterator& other) const {
+            return !(*this == other);
+        }
+
+        bool operator==(const DFSIterator& other) const {
+            return nodes == other.nodes;
+        }
+
+        DFSIterator& operator++() {
+            if (!nodes.empty()) {
+                Node<T>* current = nodes.top();
+                nodes.pop();
+                for (auto it = current->getChildren().rbegin(); it != current->getChildren().rend(); ++it) {
+                    if (*it) {
+                        nodes.push(*it);
+                    }
+                }
+            }
+            return *this;
+        }
+
+    private:
+        stack<Node<T>*> nodes;
+};
+
+
+// template <typename T>
+// void myHeap(){
+//     if (!root) {
+//         return;
+//     }
+//     queue<Node<T>*> queue;
+//     queue.push(root);
+//     while(!queue.empty()){
+//         auto node = queue.front();
+//         queue.pop();
+//         heapify(node);
+//         for(auto child : node->children){
+//             queue.push(child);
 //         }
-
-//         HeapIterator& operator++() {
-//             ++current;
-//             return *this;
-//         }
-
-//         bool operator!=(const HeapIterator& other) const {
-//             return current != other.current;
-//         }
-
-//     private:
-//         vector<T>::iterator current;
-// };
-
-    // HeapIterator begin() {
-    //     return HeapIterator(heap.begin());
-    // }
-
-    // HeapIterator end() {
-    //     return HeapIterator(heap.end());
-    // }
-
+//     }
+//}
 
 #endif // ITERATORS_HPP

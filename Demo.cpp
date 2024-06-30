@@ -5,19 +5,22 @@
 #include <string>
 #include "node.hpp"
 #include "tree.hpp"
+#include "complex.hpp"
 
 using namespace std;
 
 int main()
 {
-    Node<double> root_node(1.1);
-    Tree<double> tree; // Binary tree that contains doubles.
+    Complex root_value(1.1, 0.0);
+    Node<Complex> root_node(root_value);
+    Tree<Complex> tree; // Binary tree that contains Complex numbers.
     tree.add_root(&root_node);
-    Node<double> n1(1.2);
-    Node<double> n2(1.3);
-    Node<double> n3(1.4);
-    Node<double> n4(1.5);
-    Node<double> n5(1.6);
+    
+    Node<Complex> n1(Complex(1.2, 0.0));
+    Node<Complex> n2(Complex(1.3, 0.0));
+    Node<Complex> n3(Complex(1.4, 0.0));
+    Node<Complex> n4(Complex(1.5, 0.0));
+    Node<Complex> n5(Complex(1.6, 0.0));
 
     tree.add_sub_node(root_node, n1);
     tree.add_sub_node(root_node, n2);
@@ -65,14 +68,14 @@ int main()
     cout << endl;
     //cout << tree; // Should print the graph using GUI.
 
-    Tree<double> three_ary_tree(3); // 3-ary tree.
-    Node<double> root2_node(1.1);
-    three_ary_tree.add_root(&root2_node);
-    three_ary_tree.add_sub_node(root2_node, n1);
-    three_ary_tree.add_sub_node(root2_node, n2);
-    three_ary_tree.add_sub_node(root2_node, n3);
-    three_ary_tree.add_sub_node(n1, n4);
-    three_ary_tree.add_sub_node(n2, n5);
+    // Tree<double> three_ary_tree(3); // 3-ary tree.
+    // Node<double> root2_node(1.1);
+    // three_ary_tree.add_root(&root2_node);
+    // three_ary_tree.add_sub_node(root2_node, n1);
+    // three_ary_tree.add_sub_node(root2_node, n2);
+    // three_ary_tree.add_sub_node(root2_node, n3);
+    // three_ary_tree.add_sub_node(n1, n4);
+    // three_ary_tree.add_sub_node(n2, n5);
 
      // The tree should look like:
     /**
