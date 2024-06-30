@@ -15,14 +15,13 @@ template<typename T> class Node {
     public:
         // Constructor to initialize the node with a value
         explicit Node(T val, vector<Node<T>*> k = {},int maxC = 2) : value(val), children(k), maxChild(maxC) {
-            //children.resize(2);
         }
 
         T get_value(){
             return value;
         }
 
-        vector<Node<T>*> getChildren(){
+        vector<Node<T>*>& getChildren(){
             return children;
         }
 

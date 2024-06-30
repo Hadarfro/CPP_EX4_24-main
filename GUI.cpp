@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <cmath>
 #include "tree.hpp"
 
@@ -10,7 +11,7 @@ template <typename T>
 Tree<T> createSampleTree() {
     Node<double> root_node(1.1);
     Tree<double> tree; // Binary tree that contains doubles.
-    tree.add_root(&root_node); // problem!!!!
+    tree.add_root(&root_node);
     Node<double> n1(1.2);
     Node<double> n2(1.3);
     Node<double> n3(1.4);
@@ -26,20 +27,14 @@ Tree<T> createSampleTree() {
     return tree;
 }
 
-// Overloaded function with default root position
-// template <typename T, int N>
-// void drawTree(sf::RenderWindow& window, Node<T, N>* node, sf::Font& font, float levelSpacing = 100.f, float siblingSpacing = 50.f) {
-//     // Get window size and calculate root position
-//     sf::Vector2u windowSize = window.getSize();
-//     sf::Vector2f rootPosition(windowSize.x / 2.f, 100.f);
-//     drawTree(window, node, font, rootPosition, levelSpacing, siblingSpacing);
-// }
-
-// Original function with position parameter
 template <typename T>
 void drawTree(sf::RenderWindow& window, Node<T>* node, sf::Font& font, sf::Vector2f position, float levelSpacing, float siblingSpacing) {
-    // Draw node itself
-    sf::CircleShape circle(30.f);
+    if (!node){ 
+        return;
+    }
+
+    // Draw node circle
+    sf::CircleShape circle(50.f);
     circle.setOutlineThickness(2.f);
     circle.setOutlineColor(sf::Color::Black);
     circle.setFillColor(sf::Color::White);
@@ -47,7 +42,7 @@ void drawTree(sf::RenderWindow& window, Node<T>* node, sf::Font& font, sf::Vecto
     window.draw(circle);
 
     // Draw node value as text
-    sf::Text text(std::to_string(node->get_value()), font, 20);
+    sf::Text text(to_string(node->get_value()), font, 20);
     text.setFillColor(sf::Color::Black);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
@@ -55,23 +50,21 @@ void drawTree(sf::RenderWindow& window, Node<T>* node, sf::Font& font, sf::Vecto
     window.draw(text);
 
     // Draw edges to children and position children nodes
-    const auto& children = node->getChildren();
+    vector<Node<T>*> children = node->getChildren();//problem!!!!!!!!!!!!!!!!!!!!
     if (!children.empty()) {
-        // Calculate initial position for the first child
         sf::Vector2f childPosition = position;
         childPosition.y += levelSpacing;
         childPosition.x -= siblingSpacing * (children.size() - 1) / 2.f;
 
-        for (size_t i = 0;i < node->getChildren().size();i++) {
-            // Draw edge
+        for (auto* child : children) {
             sf::Vertex line[] = {
                 sf::Vertex(position),
                 sf::Vertex(childPosition)
             };
             window.draw(line, 2, sf::Lines);
 
-            // Draw child recursively
-            drawTree(window, node->getChildren()[i], font, childPosition, levelSpacing, siblingSpacing);
+            // Recursively draw child nodes
+            drawTree(window, child, font, childPosition, levelSpacing, siblingSpacing);
 
             // Update position for the next child
             childPosition.x += siblingSpacing;

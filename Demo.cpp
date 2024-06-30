@@ -12,7 +12,7 @@ int main()
 {
     Node<double> root_node(1.1);
     Tree<double> tree; // Binary tree that contains doubles.
-    tree.add_root(&root_node); // problem!!!!
+    tree.add_root(&root_node);
     Node<double> n1(1.2);
     Node<double> n2(1.3);
     Node<double> n3(1.4);
