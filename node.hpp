@@ -24,12 +24,7 @@ template<typename T> class Node {
 
         //adding the child to the parent node 
         void addChild(Node<T>* node){
-            if(children.size() < maxChild){
-                children.push_back(node);
-            }
-             else {
-                cerr << "Node cannot have more than " << maxChild << " children." << std::endl;
-            }
+            children.push_back(node); 
         }
 };
 

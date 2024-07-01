@@ -22,16 +22,12 @@ template <typename T> class Tree {
         Node<T>* getRoot(){
             return root;
         } 
-        //class BFSIterator;
-        BFSIterator<T> begin() { return BFSIterator<T>(root); }
-        BFSIterator<T> end() { return BFSIterator<T>(nullptr); }
         void add_sub_node(Node<T>& parent_node, Node<T>& child_node) {
             if(parent_node.getChildren().size() < maxChildren) {
                 parent_node.addChild(&child_node);
                 return;
             }
-            cout << "Parent has the maximum number of children" << endl;
-            return;
+            throw runtime_error("Parent has the maximum number of children");
         }
         Node<T>* find_node(Node<T>* node, T value);
         PreOrderIterator<T> begin_pre_order() {
@@ -57,6 +53,28 @@ template <typename T> class Tree {
         }
         BFSIterator<T> end_bfs_scan() {
             return BFSIterator<T>(nullptr);
+        }
+        DFSIterator<T> begin_dfs_scan() { 
+            return DFSIterator<T>(root); 
+        }
+        DFSIterator<T> end_dfs_scan() { 
+            return DFSIterator<T>(nullptr); 
+        }
+
+        void myHeap(){
+            if (!root) {
+                return;
+            }
+            queue<Node<T>*> queue;
+            queue.push(root);
+            while(!queue.empty()){
+                auto node = queue.front();
+                queue.pop();
+                heapify(node);
+                for(auto child : node->getChildren()){
+                    queue.push(child);
+                }
+            }
         }
 
     private:

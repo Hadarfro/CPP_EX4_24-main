@@ -51,6 +51,7 @@ template <typename T> class PreOrderIterator {
 };
 
 
+
 template <typename T> class InOrderIterator {
     public:
         explicit InOrderIterator(Node<T>* root) {
@@ -205,64 +206,47 @@ template <typename T> class BFSIterator {
         queue<Node<T>*> nodes;
 };
 
-// template <typename T>
-// class DFSIterator {
-//     public:
-//         explicit DFSIterator(Node<T>* root) {
-//             if (root) {
-//                 nodes.push(root);
-//             }
-//         }
+template <typename T>
+class DFSIterator {
+    public:
+        explicit DFSIterator(Node<T>* root) {
+            if (root) {
+                nodes.push(root);
+            }
+        }
 
-//         Node<T>* operator->() const {
-//             return nodes.top();
-//         }
+        Node<T>* operator->() const {
+            return nodes.top();
+        }
 
-//         Node<T>& operator*() const {
-//             return *nodes.top();
-//         }
+        Node<T>& operator*() const {
+            return *nodes.top();
+        }
 
-//         bool operator!=(const DFSIterator& other) const {
-//             return !(*this == other);
-//         }
+        bool operator!=(const DFSIterator& other) const {
+            return !(*this == other);
+        }
 
-//         bool operator==(const DFSIterator& other) const {
-//             return nodes == other.nodes;
-//         }
+        bool operator==(const DFSIterator& other) const {
+            return nodes == other.nodes;
+        }
 
-//         DFSIterator& operator++() {
-//             if (!nodes.empty()) {
-//                 Node<T>* current = nodes.top();
-//                 nodes.pop();
-//                 for (const auto& it = current->getChildren().rbegin(); it != current->getChildren().rend(); ++it) {
-//                     if (*it) {
-//                         nodes.push(*it);
-//                     }
-//                 }
-//             }
-//             return *this;
-//         }
+        DFSIterator& operator++() {
+            if (!nodes.empty()) {
+                Node<T>* current = nodes.top();
+                nodes.pop();
+                for (auto& child : current->getChildren()) {
+                    if (child) {
+                        nodes.push(child);
+                    }
+                }
+            }
+            return *this;
+        }
 
-//     private:
-//         stack<Node<T>*> nodes;
-// };
+    private:
+        stack<Node<T>*> nodes;
+};
 
-
-// template <typename T>
-// void myHeap(){
-//     if (!root) {
-//         return;
-//     }
-//     queue<Node<T>*> queue;
-//     queue.push(root);
-//     while(!queue.empty()){
-//         auto node = queue.front();
-//         queue.pop();
-//         heapify(node);
-//         for(auto child : node->children){
-//             queue.push(child);
-//         }
-//     }
-//}
 
 #endif // ITERATORS_HPP
