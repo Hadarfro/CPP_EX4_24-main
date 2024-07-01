@@ -96,7 +96,6 @@ TEST_CASE("Test Tree Creation with Doubles") {
         vector<double> test;
         size_t i = 0;
         for (auto node = doubleTree.begin_post_order(); node != doubleTree.end_post_order(); ++node){
-            cout << "the value is " << node->get_value() << endl;
             CHECK(node->get_value() == expected[i]);
             i++;
         }
@@ -157,18 +156,33 @@ TEST_CASE("Test Tree with Strings") {
     SUBCASE("Test In-Order Traversal") {
         vector<string> expected{"child1", "root", "child2"};
         vector<string> test;
+        size_t i = 0;
         for (auto node = stringTree.begin_in_order(); node != stringTree.end_in_order(); ++node){
             test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
         }
-        CHECK(test == expected);
     }
 
     SUBCASE("Test BFS Traversal") {
         vector<string> expected{"root", "child1", "child2"};
         vector<string> test;
+        size_t i = 0;
         for (auto node = stringTree.begin_bfs_scan(); node != stringTree.end_bfs_scan(); ++node){
             test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
         }
-        CHECK(test == expected);
+    }
+
+    SUBCASE("Test DFS Traversal") {
+        vector<string> expected{"root", "child2", "child1"};
+        vector<string> test;
+        size_t i = 0;
+        for (auto node = stringTree.begin_dfs_scan(); node != stringTree.end_dfs_scan(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
     }
 }
