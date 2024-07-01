@@ -186,3 +186,17 @@ TEST_CASE("Test Tree with Strings") {
         }
     }
 }
+
+TEST_CASE("Test Tree Creation") {
+    Node<int> root(10);
+    Node<int> child1(20);
+    Node<int> child2(30);
+
+    root.addChild(&child1);
+    root.addChild(&child2);
+
+    CHECK(root.get_value() == 10);
+    CHECK(root.getChildren().size() == 2);
+    CHECK(root.getChildren()[0]->get_value() == 20);
+    CHECK(root.getChildren()[1]->get_value() == 30);
+} 
