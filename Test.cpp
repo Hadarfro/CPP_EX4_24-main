@@ -1,8 +1,12 @@
-#include "doctest.hpp"
+#include "doctest.h"
 #include "tree.hpp"
 #include "node.hpp"
 #include "iterators.hpp"
-
+#include "complex.hpp"
+#include <sstream>
+#include <string>
+#include <vector>
+#include <iostream>
 
 /*
  * Author: Hadar Froimowich.
@@ -10,138 +14,161 @@
  * Email: hadarfro12@gmail.com
  */
 
-using namespace std;
 using namespace doctest;
+using namespace std;
 
-
-TEST_CASE("Test PreOrderIterator") {
+TEST_CASE("Testing Tree with Integers") {
+    Tree<int> intTree;
     Node<int> root(1);
-    Node<int> node1(2);
-    Node<int> node2(3);
-    Node<int> node3(4);
-    Node<int> node4(5);
-    Node<int> node5(6);
+    intTree.add_root(&root);
+    Node<int> child1(2);
+    Node<int> child2(3);
+    intTree.add_sub_node(root, child1);
+    intTree.add_sub_node(root, child2);
 
-    Tree<int> tree(3);
-    tree.add_root(&root);
-    tree.add_sub_node(root, node1);
-    tree.add_sub_node(root, node2);
-    tree.add_sub_node(node1, node3);
-    tree.add_sub_node(node1, node4);
-    tree.add_sub_node(node2, node5);
-
-    SUBCASE("Pre-order Traversal") {
-        vector<int> values;
-        for (auto it = PreOrderIterator<int>(&root); it != PreOrderIterator<int>(nullptr); ++it) {
-            values.push_back(it->get_value());
+    SUBCASE("Test Pre-Order Traversal") {
+        vector<int> expected{1, 2, 3};
+        vector<int> test;
+        for (auto node = intTree.begin_pre_order(); node != intTree.end_pre_order(); ++node){
+            test.push_back(node->get_value());
         }
-        vector<int> expected = {1, 2, 4, 5, 3, 6};
-        CHECK(values == expected);
+        CHECK(test == expected);
+        
+    }
+
+    SUBCASE("Test Post-Order Traversal") {
+        vector<int> expected{2, 3, 1};
+        vector<int> test;
+        size_t i = 0;
+        for (auto node = intTree.begin_post_order(); node != intTree.begin_post_order(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
+    }
+
+    SUBCASE("Test In-Order Traversal") {
+        vector<int> expected{2, 1, 3};
+        vector<int> test;
+        size_t i = 0;
+        for (auto node = intTree.begin_in_order(); node != intTree.begin_in_order(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
+        
+    }
+
+    SUBCASE("Test BFS Traversal") {
+        vector<int> expected{1, 2, 3};
+        vector<int> test;
+        size_t i = 0;
+        for (auto node = intTree.begin_bfs_scan(); node != intTree.begin_bfs_scan(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
     }
 }
 
-TEST_CASE("Test InOrderIterator") {
-    Node<int> root(1);
-    Node<int> node1(2);
-    Node<int> node2(3);
-    Node<int> node3(4);
-    Node<int> node4(5);
-    Node<int> node5(6);
+TEST_CASE("Test Tree Creation with Doubles") {
+    Tree<double> doubleTree(3); // k-ary tree that contains doubles.
+    Node<double> root(1.1);
+    doubleTree.add_root(&root);
+    Node<double> child1(1.2);
+    Node<double> child2(1.3);
+    doubleTree.add_sub_node(root, child1);
+    doubleTree.add_sub_node(root, child2);
 
-    Tree<int> tree(3);
-    tree.add_root(&root);
-    tree.add_sub_node(root, node1);
-    tree.add_sub_node(root, node2);
-    tree.add_sub_node(node1, node3);
-    tree.add_sub_node(node1, node4);
-    tree.add_sub_node(node2, node5);
-
-    SUBCASE("In-order Traversal") {
-        vector<int> values;
-        for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node){
-            values.push_back(node->get_value());
+    SUBCASE("Test Pre-Order Traversal") {
+        vector<double> expected{1.1, 1.2, 1.3};
+        vector<double> test;
+        size_t i = 0;
+        for (auto node = doubleTree.begin_pre_order(); node != doubleTree.end_pre_order(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected.at(i));
+            i++;
         }
-        vector<int> expected = {4, 2, 5, 1, 3, 6};
-        CHECK(values == expected);
+    }
+
+    SUBCASE("Test Post-Order Traversal") {
+        vector<double> expected{1.2, 1.3, 1.1};
+        vector<double> test;
+        size_t i = 0;
+        for (auto node = doubleTree.begin_post_order(); node != doubleTree.end_post_order(); ++node){
+            cout << "the value is " << node->get_value() << endl;
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
+    }
+
+    SUBCASE("Test In-Order Traversal") {
+        vector<double> expected{1.2, 1.1, 1.3};
+        vector<double> test;
+        size_t i = 0;
+        for (auto node = doubleTree.begin_in_order(); node != doubleTree.end_in_order(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
+    }
+
+    SUBCASE("Test BFS Traversal") {
+        vector<double> expected{1.1, 1.2, 1.3};
+        vector<double> test;
+        size_t i = 0;
+        for (auto node = doubleTree.begin_bfs_scan(); node != doubleTree.end_bfs_scan(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
     }
 }
 
-TEST_CASE("Test PostOrderIterator") {
-    Node<int> root(1);
-    Node<int> node1(2);
-    Node<int> node2(3);
-    Node<int> node3(4);
-    Node<int> node4(5);
-    Node<int> node5(6);
+TEST_CASE("Test Tree with Strings") {
+    Tree<string> stringTree;
+    Node<string> root("root");
+    stringTree.add_root(&root);
+    Node<string> child1("child1");
+    Node<string> child2("child2");
+    stringTree.add_sub_node(root, child1);
+    stringTree.add_sub_node(root, child2);
 
-    Tree<int> tree(3);
-    tree.add_root(&root);
-    tree.add_sub_node(root, node1);
-    tree.add_sub_node(root, node2);
-    tree.add_sub_node(node1, node3);
-    tree.add_sub_node(node1, node4);
-    tree.add_sub_node(node2, node5);
-
-    SUBCASE("Post-order Traversal") {
-        vector<int> values;
-        for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node){
-            values.push_back(node->get_value());
+    SUBCASE("Test Pre-Order Traversal") {
+        vector<string> expected{"root", "child1", "child2"};
+        vector<string> test;
+        for (auto node = stringTree.begin_pre_order(); node != stringTree.end_pre_order(); ++node){
+            test.push_back(node->get_value());
         }
-        vector<int> expected = {4, 5, 2, 6, 3, 1};
-        CHECK(values == expected);
+        CHECK(test == expected);
+    }
+
+    SUBCASE("Test Post-Order Traversal") {
+        vector<string> expected{"child1", "child2", "root"};
+        vector<string> test;
+        size_t i = 0;
+        for (auto node = stringTree.begin_post_order(); node != stringTree.end_post_order(); ++node){
+            test.push_back(node->get_value());
+            CHECK(node->get_value() == expected[i]);
+            i++;
+        }
+    }
+
+    SUBCASE("Test In-Order Traversal") {
+        vector<string> expected{"child1", "root", "child2"};
+        vector<string> test;
+        for (auto node = stringTree.begin_in_order(); node != stringTree.end_in_order(); ++node){
+            test.push_back(node->get_value());
+        }
+        CHECK(test == expected);
+    }
+
+    SUBCASE("Test BFS Traversal") {
+        vector<string> expected{"root", "child1", "child2"};
+        vector<string> test;
+        for (auto node = stringTree.begin_bfs_scan(); node != stringTree.end_bfs_scan(); ++node){
+            test.push_back(node->get_value());
+        }
+        CHECK(test == expected);
     }
 }
-
-TEST_CASE("Test BFSIterator") {
-    Node<int> root(1);
-    Node<int> node1(2);
-    Node<int> node2(3);
-    Node<int> node3(4);
-    Node<int> node4(5);
-    Node<int> node5(6);
-
-    Tree<int> tree(3);
-    tree.add_root(&root);
-    tree.add_sub_node(root, node1);
-    tree.add_sub_node(root, node2);
-    tree.add_sub_node(node1, node3);
-    tree.add_sub_node(node1, node4);
-    tree.add_sub_node(node2, node5);
-
-    SUBCASE("Breadth-first Traversal") {
-        vector<int> values;
-        for (auto it = BFSIterator<int>(&root); it != BFSIterator<int>(nullptr); ++it) {
-            values.push_back(it->get_value());
-        }
-        vector<int> expected = {1, 2, 3, 4, 5, 6};
-        CHECK(values == expected);
-    }
-}
-
-// TEST_CASE("Test DFSIterator") {
-//     Node<int> root(1);
-//     Node<int> node1(2);
-//     Node<int> node2(3);
-//     Node<int> node3(4);
-//     Node<int> node4(5);
-//     Node<int> node5(6);
-
-//     Tree<int> tree(3);
-//     tree.add_root(&root);
-//     tree.add_sub_node(root, node1);
-//     tree.add_sub_node(root, node2);
-//     tree.add_sub_node(node1, node3);
-//     tree.add_sub_node(node1, node4);
-//     tree.add_sub_node(node2, node5);
-
-//     SUBCASE("Depth-first Traversal") {
-//         vector<int> values;
-//         for (auto it = DFSIterator<int>(&root); it != DFSIterator<int>(nullptr); ++it) {
-//             values.push_back(it->get_value());
-//         }
-//         vector<int> expected = {1, 2, 4, 5, 3, 6};
-//         CHECK(values == expected);
-//     }
-// }
-
-

@@ -102,67 +102,67 @@ template <typename T> class InOrderIterator {
 };
 
 
-template <typename T> class PostOrderIterator {
-    public:
-        explicit PostOrderIterator(Node<T>* root) {
-            if (root) {
-                findNextLeaf(root);
-            }
+template <typename T>
+class PostOrderIterator {
+public:
+    explicit PostOrderIterator(Node<T>* root) {
+        if (root) {
+            findNextLeaf(root);
+            fillStack();
         }
+    }
 
-        bool operator!=(const PostOrderIterator& other) const {
-            return !(*this == other);
+    bool operator!=(const PostOrderIterator& other) const {
+        return !(*this == other);
+    }
+
+    bool operator==(const PostOrderIterator& other) const {
+        return nodes == other.nodes;
+    }
+
+    Node<T>* operator->() const {
+        return nodes.top();
+    }
+
+    Node<T>& operator*() const {
+        return *nodes.top();
+    }
+
+    PostOrderIterator& operator++() {
+        if (!nodes.empty()) {
+            nodes.pop();
         }
+        return *this;
+    }
 
-        bool operator==(const PostOrderIterator& other) const {
-            return nodes == other.nodes;
+private:
+    stack<Node<T>*> nodes;
+    stack<Node<T>*> tempStack;
+
+    void findNextLeaf(Node<T>* node) {
+        if (!node) {
+            return;
         }
-
-        Node<T>* operator->() const {
-            return nodes.top();
+        nodes.push(node);
+        vector<Node<T>*> children = node->getChildren();
+        for (auto it = children.rbegin(); it != children.rend(); ++it) {
+            findNextLeaf(*it);
         }
+    }
 
-        Node<T>& operator*() const {
-            return *nodes.top();
+    void fillStack() {
+        while (!nodes.empty()) {
+            Node<T>* current = nodes.top();
+            nodes.pop();
+            tempStack.push(current);
         }
-
-        PostOrderIterator& operator++(){
-            if (!nodes.empty()) {
-                Node<T>* current = nodes.top();
-                nodes.pop();
-                if (!nodes.empty()) {
-                    Node<T>* parent = nodes.top();
-                    if (!parent->getChildren().empty() && parent->getChildren().back() == current) {
-                        nodes.pop();
-                        findNextLeaf(parent);
-                    }
-                }
-            }
-            return *this;
+        while (!tempStack.empty()) {
+            nodes.push(tempStack.top());
+            tempStack.pop();
         }
-
-    private:
-        stack<Node<T>*> nodes;
-
-        void findNextLeaf(Node<T>* node) {
-            while (node) {
-                nodes.push(node);
-                if (!node->getChildren().empty()) {
-                    // Push all children onto the stack in reverse order
-                    vector<Node<T>*> children = node->getChildren();
-                    for (size_t i = 0;i < node->getChildren().size();i++) {
-                        if (node->getChildren().at(i)) {
-                            nodes.push(node->getChildren().at(i));
-                        }
-                    }
-                    node = children.front(); // move to the first child
-                } 
-                else {
-                    break;
-                }
-            }
-        }
+    }
 };
+
 
 
 template <typename T> class BFSIterator {
