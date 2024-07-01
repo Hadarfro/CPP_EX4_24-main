@@ -1,11 +1,13 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
 #include "node.hpp"
 #include "iterators.hpp"
 
+using namespace sf;
 
 template <typename T> class Tree {
     public:
@@ -25,6 +27,10 @@ template <typename T> class Tree {
         Node<T>* getRoot(){
             return root;
         } 
+
+        void displayTree();
+
+        void drawTree(sf::RenderWindow& window, Node<T>* node, const sf::Font& font, int x, int y, unsigned long level = 0);
 
         // Adds a child node to a parent node. Throws an exception if the parent already has the maximum number of children
         void add_sub_node(Node<T>& parent_node, Node<T>& child_node) {
