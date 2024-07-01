@@ -40,34 +40,33 @@ int main(){
 
     for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.1, 1.2, 1.4, 1.5, 1.3, 1.6
+    } // prints: 
     cout << endl;
 
     cout << "post order:" << endl;
-
     for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.4, 1.5, 1.2, 1.6, 1.3, 1.1
+    } // prints: 
     cout << endl;
     cout << "in order:" << endl;
     for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.4, 1.2, 1.5, 1.1, 1.6, 1.3
+    } // prints: 
     cout << endl;
     cout << "BFS:" << endl;
     for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+    } // prints: 
     cout << endl;
     cout << "regular:" << endl;
     for (auto node : tree){
         cout << node.get_value() << "  ";
-    } // same as BFS: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+    } // same as BFS: 
     cout << endl;
     cout << endl;
     //cout << tree; // Should print the graph using GUI.
 
-     Node<int> root(10);
+    Node<int> root(10);
     Node<int> node1(20);
     Node<int> node2(30);
     Node<int> node3(40);
@@ -94,21 +93,23 @@ int main(){
     cout << endl;
 
     cout << "post order:" << endl;
-
-    // for (auto node = three_ary_tree.begin_post_order(); node != three_ary_tree.end_post_order(); ++node){
-    //     cout << node->get_value() << "  ";
-    // } // prints: 1.4, 1.5, 1.2, 1.6, 1.3, 1.1
+    for (auto node = three_ary_tree.begin_post_order(); node != three_ary_tree.end_post_order(); ++node){
+        cout << node->get_value() << "  ";
+    } // prints: 1.4, 1.5, 1.2, 1.6, 1.3, 1.1
     cout << endl;
+
     cout << "in order:" << endl;
     for (auto node = three_ary_tree.begin_in_order(); node != three_ary_tree.end_in_order(); ++node){
         cout << node->get_value() << "  ";
     } // prints: 1.4, 1.2, 1.5, 1.1, 1.6, 1.3
     cout << endl;
+
     cout << "BFS:" << endl;
     for (auto node = three_ary_tree.begin_bfs_scan(); node != three_ary_tree.end_bfs_scan(); ++node){
         cout << node->get_value() << "  ";
     } // prints: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
     cout << endl;
+    
     cout << "regular:" << endl;
     for (auto node : three_ary_tree){
         cout << node.get_value() << "  ";

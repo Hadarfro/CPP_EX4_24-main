@@ -126,14 +126,14 @@ template <typename T> class PostOrderIterator {
         }
 
         PostOrderIterator& operator++(){
-            if (!nodes.empty()){
+            if (!nodes.empty()) {
                 Node<T>* current = nodes.top();
                 nodes.pop();
                 if (!nodes.empty()) {
-                    Node<T>* top = nodes.top();
-                    if (!top->getChildren().empty() && top->getChildren().back() == current) {
+                    Node<T>* parent = nodes.top();
+                    if (!parent->getChildren().empty() && parent->getChildren().back() == current) {
                         nodes.pop();
-                        findNextLeaf(top);
+                        findNextLeaf(parent);
                     }
                 }
             }
@@ -144,15 +144,17 @@ template <typename T> class PostOrderIterator {
         stack<Node<T>*> nodes;
 
         void findNextLeaf(Node<T>* node) {
-            size_t j = 0;
-            while(node){
+            while (node) {
                 nodes.push(node);
-                if (!node->getChildren().empty()){
-                    for (size_t i = j; i < node->getChildren().size(); i++) {
-                        node = node->getChildren().at(i);
-                        break;
+                if (!node->getChildren().empty()) {
+                    // Push all children onto the stack in reverse order
+                    vector<Node<T>*> children = node->getChildren();
+                    for (size_t i = 0;i < node->getChildren().size();i++) {
+                        if (node->getChildren().at(i)) {
+                            nodes.push(node->getChildren().at(i));
+                        }
                     }
-                    j++;
+                    node = children.front(); // move to the first child
                 } 
                 else {
                     break;
