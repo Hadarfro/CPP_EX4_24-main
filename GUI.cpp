@@ -73,8 +73,6 @@ void drawTree(RenderWindow& window, Node<T>* node, const Font& font, int x, int 
     window.draw(text);
 }
     
-
-
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tree Visualization with SFML");
     
