@@ -12,8 +12,8 @@ template <typename T> class Tree {
         Tree(int k = 2) : maxChildren(k), root(nullptr) {}
 
         void add_root(Node<T>* node) {
-             if (root) {
-                cerr << "Tree already has a root." << endl;
+            if (root) {
+                throw runtime_error("Tree already has a root");
             } 
             else {
                 root = node;

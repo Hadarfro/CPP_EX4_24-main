@@ -22,7 +22,7 @@ template<typename T> class Node {
             return children;
         }
 
-        //adding the child to the parent node 
+        // Function to add a child node to the current node
         void addChild(Node<T>* node){
             children.push_back(node); 
         }

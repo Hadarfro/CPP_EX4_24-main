@@ -200,3 +200,39 @@ TEST_CASE("Test Tree Creation") {
     CHECK(root.getChildren()[0]->get_value() == 20);
     CHECK(root.getChildren()[1]->get_value() == 30);
 } 
+
+TEST_CASE("Tree Operations") {
+    SUBCASE("Adding root node") {
+        Tree<int> tree;
+        Node<int> root_node(10);
+
+        tree.add_root(&root_node);
+
+        REQUIRE(tree.getRoot() == &root_node);
+    }
+
+    SUBCASE("Adding sub-nodes") {
+        Tree<int> tree;
+        Node<int> root_node(10);
+        tree.add_root(&root_node);
+
+        Node<int> child1(20);
+        Node<int> child2(30);
+
+        REQUIRE_NOTHROW(tree.add_sub_node(root_node, child1));
+        REQUIRE_NOTHROW(tree.add_sub_node(root_node, child2));
+
+        // Verify the children were correctly added
+        auto children = root_node.getChildren();
+        REQUIRE(children.size() == 2);
+        REQUIRE(children[0]->get_value() == 20);
+        REQUIRE(children[1]->get_value() == 30);
+
+        // Attempt to add more children than allowed
+        Node<int> child3(40);
+        Node<int> child4(50);
+        Node<int> child5(60);
+
+        CHECK_THROWS_AS(tree.add_sub_node(root_node, child4), runtime_error);
+    }
+}
