@@ -39,35 +39,35 @@ int main(){
     cout << "pre order:" << endl; 
     for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 
+    } // prints: 1.1 + 2i  1.2 + 3i  1.4 + 7i  1.5 + 3.9i  1.3 + 5.2i  1.6 + 4.1i 
     cout << endl;
     cout << endl;
 
     cout << "post order:" << endl;
     for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 
+    } // prints: 1.4 + 7i  1.5 + 3.9i  1.2 + 3i  1.6 + 4.1i  1.3 + 5.2i  1.1 + 2i 
     cout << endl;
     cout << endl;
 
     cout << "in order:" << endl;
     for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 
+    } // prints: 1.4 + 7i  1.2 + 3i  1.5 + 3.9i  1.1 + 2i  1.6 + 4.1i  1.3 + 5.2i 
     cout << endl;
     cout << endl;
 
     cout << "BFS:" << endl;
     for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 
+    } // prints: 1.1 + 2i  1.2 + 3i  1.3 + 5.2i  1.4 + 7i  1.5 + 3.9i  1.6 + 4.1i 
     cout << endl;
     cout << endl;
 
     cout << "DFS:" << endl;
     for (auto node = tree.begin_dfs_scan(); node != tree.end_dfs_scan(); ++node){
         cout << node->get_value() << "  ";
-    } // same as BFS: 
+    } // prints: 1.1 + 2i  1.3 + 5.2i  1.6 + 4.1i  1.2 + 3i  1.5 + 3.9i  1.4 + 7i 
     cout << endl;
     cout << endl;
     //cout << tree; // Should print the graph using GUI.
@@ -94,35 +94,35 @@ int main(){
     cout << "pre order:" << endl; 
     for (auto node = three_ary_tree.begin_pre_order(); node != three_ary_tree.end_pre_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.1, 1.2, 1.4, 1.5, 1.3, 1.6
+    } // prints: 10  20  50  60  30  70  40  80
     cout << endl;
     cout << endl;
 
     cout << "post order:" << endl;
     for (auto node = three_ary_tree.begin_post_order(); node != three_ary_tree.end_post_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.4, 1.5, 1.2, 1.6, 1.3, 1.1
+    } // prints: 50  60  20  70  30  80  40  10 
     cout << endl;
     cout << endl;
 
     cout << "in order:" << endl;
     for (auto node = three_ary_tree.begin_in_order(); node != three_ary_tree.end_in_order(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.4, 1.2, 1.5, 1.1, 1.6, 1.3
+    } // prints: 50  20  60  10  70  30 
     cout << endl;
     cout << endl;
 
     cout << "BFS:" << endl;
     for (auto node = three_ary_tree.begin_bfs_scan(); node != three_ary_tree.end_bfs_scan(); ++node){
         cout << node->get_value() << "  ";
-    } // prints: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+    } // prints: 10  20  30  40  50  60  70  80
     cout << endl;
     cout << endl;
 
     cout << "DFS:" << endl;
     for (auto node = three_ary_tree.begin_dfs_scan(); node != three_ary_tree.end_dfs_scan(); ++node){
         cout << node->get_value() << "  ";
-    } // same as BFS: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+    } // prints: 10  40  80  30  70  20  60  50
     cout << endl;
     cout << endl;
 
