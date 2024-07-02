@@ -3,6 +3,10 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <memory>
+#include <queue>
+#include <stack>
+#include <iterator>
 #include "tree.hpp"
 #include "node.hpp"
 
@@ -14,11 +18,11 @@ Node<T>* Tree<T>::find_node(Node<T>* node, T value) {
     if (!node){
      return nullptr;
     }
-    if (node->value == value){
+    if (node->get_value() == value){
         return node;
     }
     for (auto& child : node->getChildren()) {
-        Node<T>* found = find_node(child.get(), value);
+        Node<T>* found = find_node(child, value);
         if (found){
             return found;
         } 
@@ -27,7 +31,7 @@ Node<T>* Tree<T>::find_node(Node<T>* node, T value) {
 }
 
 template <typename T>
-void drawTree(sf::RenderWindow& window, Node<T>* node, const sf::Font& font, int x, int y, unsigned long level = 0) {
+void drawTree(sf::RenderWindow& window, Node<T>* node, const sf::Font& font, int x, int y, unsigned long level = 0){
     if (!node) {
         return;
     }
@@ -97,3 +101,6 @@ void Tree<T>::displayTree(){
         window.display();
     }
 }
+
+// Explicit template instantiation for int
+//template class Tree<int>;

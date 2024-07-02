@@ -8,6 +8,7 @@
 #include "iterators.hpp"
 
 using namespace sf;
+using namespace std;
 
 template <typename T> class Tree {
     public:
@@ -112,16 +113,16 @@ template <typename T> class Tree {
         }
 
         void heapify(Node<T>* node){
-        if (!node) {
-            return;
-        }
-        for(Node<T> child : node->getChildren()){
-            heapify(child);
-            if(child.get_value() < node->get_value()){
-                swap(child.get_value(), node->get_value());
+            if (!node) {
+                return;
+            }
+            for(Node<T>* child : node->getChildren()){
+                heapify(child);
+                if(child->get_value() < node->get_value()){
+                    std::swap(child->get_value(), node->get_value());
+                }
             }
         }
-    }
 
     private:
         int maxChildren;  // The maximum number of children each node can have.
